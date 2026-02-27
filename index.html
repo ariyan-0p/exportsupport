@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ExportDesk — Export Support India</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,wght@0,300;0,600;0,700;1,300;1,600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0b0f1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: rgba(255,255,255,0.07);
+    --accent: #0ea5e9;
+    --accent2: #f59e0b;
+    --accent3: #10b981;
+    --wa: #25d366;
+    --danger: #ef4444;
+    --text: #f1f5f9;
+    --muted: #64748b;
+    --muted2: #94a3b8;
+    --sidebar-w: 240px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+  .app { display: flex; min-height: 100vh; }
+
+  /* SIDEBAR */
+  .sidebar { width: var(--sidebar-w); background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; height: 100vh; z-index: 100; }
+  .sidebar-logo { padding: 20px 20px 16px; border-bottom: 1px solid var(--border); }
+  .logo-mark { display: flex; align-items: center; gap: 10px; }
+  .logo-icon { width: 34px; height: 34px; background: linear-gradient(135deg, var(--accent), #6366f1); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .logo-text { font-family: 'Fraunces', serif; font-weight: 600; font-size: 17px; line-height: 1; }
+  .logo-sub { font-size: 10px; color: var(--muted); letter-spacing: 0.05em; margin-top: 2px; }
+  .sidebar-nav { padding: 14px 10px; flex: 1; overflow-y: auto; }
+  .nav-label { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; color: var(--muted); padding: 8px 10px 6px; text-transform: uppercase; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; font-size: 13.5px; font-weight: 500; color: var(--muted2); cursor: pointer; transition: all 0.15s ease; margin-bottom: 2px; }
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active { background: rgba(14,165,233,0.12); color: var(--accent); }
+  .nav-item .icon { font-size: 15px; width: 18px; text-align: center; }
+  .nav-badge { margin-left: auto; background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 20px; min-width: 18px; text-align: center; }
+  .nav-badge.amber { background: var(--accent2); }
+  .nav-badge.green { background: var(--accent3); }
+  .nav-badge.wa { background: var(--wa); }
+  .sidebar-user { padding: 14px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 10px; cursor: pointer; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .user-info .name { font-size: 13px; font-weight: 600; }
+  .user-info .role { font-size: 11px; color: var(--muted); }
+
+  /* MAIN */
+  .main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; }
+  .topbar { height: 56px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 24px; gap: 16px; position: sticky; top: 0; z-index: 50; }
+  .topbar-title { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 600; flex: 1; }
+  .topbar-title span { color: var(--accent); font-style: italic; }
+  .search-box { display: flex; align-items: center; gap: 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; font-size: 13px; color: var(--muted); width: 220px; transition: border 0.2s; }
+  .search-box:focus-within { border-color: var(--accent); }
+  .search-box input { background: none; border: none; outline: none; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; width: 100%; }
+  .search-box input::placeholder { color: var(--muted); }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; transition: all 0.15s; text-decoration: none; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #0284c7; transform: translateY(-1px); }
+  .btn-ghost { background: var(--surface2); color: var(--muted2); border: 1px solid var(--border); }
+  .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
+  .btn-wa { background: var(--wa); color: #fff; }
+  .btn-wa:hover { background: #1db954; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(37,211,102,0.3); }
+  .btn-call { background: rgba(14,165,233,0.15); color: var(--accent); border: 1px solid rgba(14,165,233,0.3); }
+  .btn-call:hover { background: rgba(14,165,233,0.25); transform: translateY(-1px); }
+  .notif-btn { width: 34px; height: 34px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; position: relative; transition: all 0.15s; }
+  .notif-btn:hover { border-color: var(--accent); }
+  .notif-dot { position: absolute; top: 6px; right: 6px; width: 7px; height: 7px; border-radius: 50%; background: var(--danger); border: 2px solid var(--surface); }
+
+  /* CONTENT */
+  .content { padding: 24px; flex: 1; }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; position: relative; overflow: hidden; transition: transform 0.2s, border-color 0.2s; cursor: default; }
+  .stat-card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.14); }
+  .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .stat-card.blue::before { background: var(--accent); }
+  .stat-card.amber::before { background: var(--accent2); }
+  .stat-card.green::before { background: var(--accent3); }
+  .stat-card.red::before { background: var(--danger); }
+  .stat-card.wagreen::before { background: var(--wa); }
+  .stat-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .stat-value { font-family: 'Fraunces', serif; font-size: 32px; font-weight: 700; line-height: 1; }
+  .stat-value.blue { color: var(--accent); }
+  .stat-value.amber { color: var(--accent2); }
+  .stat-value.green { color: var(--accent3); }
+  .stat-value.red { color: var(--danger); }
+  .stat-value.wagreen { color: var(--wa); }
+  .stat-sub { font-size: 11px; color: var(--muted); margin-top: 6px; }
+  .stat-sub .up { color: var(--accent3); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 340px; gap: 16px; }
+  .section-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+  .section-title { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+
+  /* KANBAN */
+  .task-columns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 14px; }
+  .task-col-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .task-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; gap: 6px; }
+  .col-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .col-dot.todo { background: var(--muted); }
+  .col-dot.inprogress { background: var(--accent); }
+  .col-dot.done { background: var(--accent3); }
+  .col-count { font-size: 11px; font-weight: 700; color: var(--muted); background: var(--surface2); padding: 1px 7px; border-radius: 20px; }
+  .task-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; }
+  .task-card:hover { border-color: rgba(255,255,255,0.14); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+  .task-title { font-size: 13px; font-weight: 600; margin-bottom: 8px; line-height: 1.4; }
+  .task-project { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+  .task-footer { display: flex; align-items: center; justify-content: space-between; }
+  .task-priority { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; }
+  .priority-high { background: rgba(239,68,68,0.15); color: #f87171; }
+  .priority-med { background: rgba(245,158,11,0.15); color: var(--accent2); }
+  .priority-low { background: rgba(16,185,129,0.15); color: var(--accent3); }
+  .task-due { font-size: 11px; color: var(--muted); }
+  .task-due.overdue { color: #f87171; }
+
+  /* PROJECT LIST */
+  .project-list { padding: 8px; }
+  .project-item { display: flex; align-items: center; gap: 12px; padding: 12px 12px; border-radius: 10px; cursor: pointer; transition: background 0.15s; border: 1px solid transparent; margin-bottom: 4px; }
+  .project-item:hover { background: var(--surface2); border-color: var(--border); }
+  .project-color { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+  .project-name { font-size: 13.5px; font-weight: 600; }
+  .project-meta { display: flex; gap: 8px; align-items: center; margin-top: 4px; }
+  .progress-bar { width: 70px; height: 4px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 99px; }
+  .progress-pct { font-size: 11px; color: var(--muted); font-weight: 600; width: 28px; text-align: right; }
+  .project-progress-wrap { display: flex; align-items: center; gap: 8px; }
+  .tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; letter-spacing: 0.04em; }
+  .tag.active-tag { background: rgba(16,185,129,0.15); color: var(--accent3); }
+  .tag.hold-tag { background: rgba(245,158,11,0.15); color: var(--accent2); }
+  .tag.new-tag { background: rgba(14,165,233,0.15); color: var(--accent); }
+
+  /* ACTIVITY */
+  .activity-list { padding: 8px 16px 12px; }
+  .activity-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .activity-item:last-child { border-bottom: none; }
+  .activity-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .activity-text { font-size: 12.5px; color: var(--muted2); line-height: 1.5; }
+  .activity-text strong { color: var(--text); font-weight: 600; }
+  .activity-time { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+  /* DEADLINE */
+  .deadline-list { padding: 8px 16px 12px; }
+  .deadline-item { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); }
+  .deadline-item:last-child { border-bottom: none; }
+  .deadline-date { font-size: 11px; font-weight: 700; color: var(--muted2); min-width: 36px; text-align: center; background: var(--surface2); border-radius: 6px; padding: 4px 6px; line-height: 1.2; }
+  .deadline-date .day { font-family: 'Fraunces', serif; font-size: 16px; display: block; }
+  .deadline-date .mon { font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .deadline-info .dtitle { font-size: 13px; font-weight: 600; }
+  .deadline-info .dsub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .deadline-urgency { margin-left: auto; }
+
+  /* TABS */
+  .tabs { display: flex; gap: 2px; background: var(--surface2); border-radius: 8px; padding: 3px; }
+  .tab { padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--muted); transition: all 0.15s; }
+  .tab.active { background: var(--surface); color: var(--text); }
+  .tab:hover:not(.active) { color: var(--muted2); }
+
+  /* ===================== CLIENTS TABLE ===================== */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { border-bottom: 1px solid var(--border); }
+  th { text-align: left; padding: 10px 16px; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
+  td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  .client-name { font-weight: 600; }
+  .client-company { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+  .pill-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .pill.active-pill { background: rgba(16,185,129,0.15); color: var(--accent3); }
+  .pill.active-pill .pill-dot { background: var(--accent3); }
+  .pill.onboard-pill { background: rgba(14,165,233,0.15); color: var(--accent); }
+  .pill.onboard-pill .pill-dot { background: var(--accent); }
+  .pill.hold-pill { background: rgba(245,158,11,0.15); color: var(--accent2); }
+  .pill.hold-pill .pill-dot { background: var(--accent2); }
+
+  /* ACTION BUTTONS in table */
+  .action-btns { display: flex; gap: 6px; align-items: center; }
+  .icon-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+    padding: 5px 10px; border-radius: 7px; font-size: 12px; font-weight: 600;
+    cursor: pointer; border: none; font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s; text-decoration: none; white-space: nowrap;
+  }
+  .icon-btn.wa {
+    background: rgba(37,211,102,0.12); color: var(--wa);
+    border: 1px solid rgba(37,211,102,0.25);
+  }
+  .icon-btn.wa:hover {
+    background: rgba(37,211,102,0.22);
+    box-shadow: 0 2px 12px rgba(37,211,102,0.2);
+    transform: translateY(-1px);
+  }
+  .icon-btn.call {
+    background: rgba(14,165,233,0.12); color: var(--accent);
+    border: 1px solid rgba(14,165,233,0.25);
+  }
+  .icon-btn.call:hover {
+    background: rgba(14,165,233,0.22);
+    box-shadow: 0 2px 12px rgba(14,165,233,0.2);
+    transform: translateY(-1px);
+  }
+
+  /* COMMS PAGE */
+  .comms-grid { display: grid; grid-template-columns: 300px 1fr; gap: 16px; height: calc(100vh - 140px); }
+  .comms-list { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
+  .comms-list-header { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 13px; font-weight: 700; }
+  .comms-list-body { overflow-y: auto; flex: 1; }
+  .comms-client-item { padding: 12px 16px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.15s; display: flex; align-items: center; gap: 10px; }
+  .comms-client-item:hover { background: var(--surface2); }
+  .comms-client-item.active { background: rgba(14,165,233,0.08); border-left: 2px solid var(--accent); }
+  .comms-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+  .comms-name { font-size: 13px; font-weight: 600; }
+  .comms-last { font-size: 11px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+  .comms-unread { margin-left: auto; background: var(--wa); color: #fff; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 20px; }
+
+  .comms-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; }
+  .comms-panel-header { padding: 14px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .comms-panel-info { display: flex; align-items: center; gap: 12px; }
+  .comms-panel-btns { display: flex; gap: 8px; }
+  .comms-panel-name { font-size: 15px; font-weight: 700; }
+  .comms-panel-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .log-list { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .log-entry { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; display: flex; gap: 12px; align-items: flex-start; }
+  .log-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+  .log-type { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+  .log-type.wa { color: var(--wa); }
+  .log-type.call { color: var(--accent); }
+  .log-note { font-size: 13px; color: var(--muted2); margin-top: 3px; line-height: 1.5; }
+  .log-time { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .log-duration { display: inline-block; font-size: 10px; font-weight: 700; background: rgba(14,165,233,0.12); color: var(--accent); padding: 1px 7px; border-radius: 20px; margin-left: 6px; }
+
+  .comms-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--muted); gap: 10px; }
+  .comms-empty .big-icon { font-size: 40px; }
+  .comms-empty p { font-size: 13px; }
+
+  /* MODAL */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 28px; width: 480px; transform: translateY(16px); transition: transform 0.25s; }
+  .modal-overlay.open .modal { transform: translateY(0); }
+  .modal-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
+  .modal-close { width: 28px; height: 28px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; color: var(--muted); transition: all 0.15s; }
+  .modal-close:hover { color: var(--text); }
+  .form-group { margin-bottom: 16px; }
+  .form-label { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; display: block; }
+  .form-input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; font-size: 13px; color: var(--text); font-family: 'DM Sans', sans-serif; outline: none; transition: border 0.2s; }
+  .form-input:focus { border-color: var(--accent); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  select.form-input { cursor: pointer; }
+
+  /* TOAST */
+  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--surface); border: 1px solid var(--accent3); border-radius: 12px; padding: 12px 18px; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: var(--accent3); transform: translateY(80px); opacity: 0; transition: all 0.3s ease; z-index: 300; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.wa-toast { border-color: var(--wa); color: var(--wa); }
+
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); }
+  .empty-state .icon { font-size: 36px; margin-bottom: 12px; }
+  .empty-state p { font-size: 13px; }
+
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .content { animation: fadeIn 0.3s ease; }
+
+  /* WA pulse animation */
+  @keyframes wa-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(37,211,102,0.4)} 50%{box-shadow:0 0 0 6px rgba(37,211,102,0)} }
+  .wa-pulse { animation: wa-pulse 2s infinite; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">
+        <div class="logo-icon">🌐</div>
+        <div>
+          <div class="logo-text">ExportDesk</div>
+          <div class="logo-sub">Export Support India</div>
+        </div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-label">Main</div>
+      <div class="nav-item active" onclick="showPage('dashboard',this)"><span class="icon">📊</span> Dashboard</div>
+      <div class="nav-item" onclick="showPage('projects',this)"><span class="icon">📁</span> Projects <span class="nav-badge">8</span></div>
+      <div class="nav-item" onclick="showPage('tasks',this)"><span class="icon">✅</span> My Tasks <span class="nav-badge amber">5</span></div>
+      <div class="nav-item" onclick="showPage('clients',this)"><span class="icon">🏢</span> Clients</div>
+
+      <div class="nav-label" style="margin-top:12px">Communications</div>
+      <div class="nav-item" onclick="showPage('comms',this)"><span class="icon">💬</span> WhatsApp & Calls <span class="nav-badge wa">3</span></div>
+
+      <div class="nav-label" style="margin-top:12px">Export Operations</div>
+      <div class="nav-item" onclick="showPage('markets',this)"><span class="icon">🗺️</span> Market Campaigns</div>
+      <div class="nav-item" onclick="showPage('reports',this)"><span class="icon">📈</span> Reports</div>
+      <div class="nav-item" onclick="showPage('team',this)"><span class="icon">👥</span> Team</div>
+      <div class="nav-label" style="margin-top:12px">Settings</div>
+      <div class="nav-item" onclick="showPage('settings',this)"><span class="icon">⚙️</span> Settings</div>
+    </nav>
+    <div class="sidebar-user">
+      <div class="avatar">AS</div>
+      <div class="user-info">
+        <div class="name">Admin</div>
+        <div class="role">Export Support India</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-title" id="page-title">Dashboard <span>Overview</span></div>
+      <div class="search-box"><span>🔍</span><input type="text" placeholder="Search tasks, clients, projects..."/></div>
+      <button class="btn btn-primary" onclick="openModal()">+ New Task</button>
+      <div class="notif-btn" title="Notifications">🔔<div class="notif-dot"></div></div>
+    </header>
+
+    <div class="content">
+
+      <!-- ===== DASHBOARD ===== -->
+      <div class="page active" id="page-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card blue"><div class="stat-label">Active Projects</div><div class="stat-value blue">8</div><div class="stat-sub"><span class="up">↑ 2</span> this month</div></div>
+          <div class="stat-card amber"><div class="stat-label">Pending Tasks</div><div class="stat-value amber">24</div><div class="stat-sub">3 overdue</div></div>
+          <div class="stat-card green"><div class="stat-label">Active Clients</div><div class="stat-value green">12</div><div class="stat-sub"><span class="up">↑ 1</span> new onboard</div></div>
+          <div class="stat-card wagreen"><div class="stat-label">WA Messages Sent</div><div class="stat-value wagreen">37</div><div class="stat-sub">this week</div></div>
+        </div>
+
+        <div class="section-card" style="margin-bottom:16px">
+          <div class="section-header">
+            <div class="section-title"><span>🗂️</span> Task Board</div>
+            <div class="tabs"><div class="tab active">All</div><div class="tab">Mine</div><div class="tab">Team</div></div>
+          </div>
+          <div class="task-columns">
+            <div class="task-col">
+              <div class="task-col-header"><div class="task-col-title"><div class="col-dot todo"></div>To Do</div><div class="col-count">3</div></div>
+              <div class="task-card"><div class="task-title">Prepare SIMEC Report — Textile Sector</div><div class="task-project">📁 Keystone Exports</div><div class="task-footer"><span class="task-priority priority-high">High</span><span class="task-due overdue">Mar 1</span></div></div>
+              <div class="task-card"><div class="task-title">Cold outreach — UAE & Saudi Arabia buyers</div><div class="task-project">📁 Pharma Export</div><div class="task-footer"><span class="task-priority priority-med">Medium</span><span class="task-due">Mar 5</span></div></div>
+              <div class="task-card"><div class="task-title">Compile demand-supply gap — Spices</div><div class="task-project">📁 AgriExport</div><div class="task-footer"><span class="task-priority priority-high">High</span><span class="task-due">Mar 3</span></div></div>
+            </div>
+            <div class="task-col">
+              <div class="task-col-header"><div class="task-col-title"><div class="col-dot inprogress"></div>In Progress</div><div class="col-count">3</div></div>
+              <div class="task-card"><div class="task-title">Buyer database — Germany & Netherlands</div><div class="task-project">📁 Euro Market Expansion</div><div class="task-footer"><span class="task-priority priority-high">High</span><span class="task-due">Mar 2</span></div></div>
+              <div class="task-card"><div class="task-title">Monthly performance report — Divit</div><div class="task-project">📁 Reporting Cycle</div><div class="task-footer"><span class="task-priority priority-med">Medium</span><span class="task-due">Mar 4</span></div></div>
+              <div class="task-card"><div class="task-title">Schedule follow-up calls — 3 warm leads</div><div class="task-project">📁 Lead Nurturing</div><div class="task-footer"><span class="task-priority priority-low">Low</span><span class="task-due">Mar 6</span></div></div>
+            </div>
+            <div class="task-col">
+              <div class="task-col-header"><div class="task-col-title"><div class="col-dot done"></div>Done</div><div class="col-count">4</div></div>
+              <div class="task-card" style="opacity:0.6"><div class="task-title">Export scope analysis — Ceramic tiles</div><div class="task-project">📁 Keystone Exports</div><div class="task-footer"><span class="task-priority priority-med">Medium</span><span class="task-due">Feb 26</span></div></div>
+              <div class="task-card" style="opacity:0.6"><div class="task-title">SIMEC campaign launched — UK market</div><div class="task-project">📁 Euro Market</div><div class="task-footer"><span class="task-priority priority-high">High</span><span class="task-due">Feb 20</span></div></div>
+              <div class="task-card" style="opacity:0.6"><div class="task-title">Client KYC verified — Mehta Ceramics</div><div class="task-project">📁 Onboarding</div><div class="task-footer"><span class="task-priority priority-low">Low</span><span class="task-due">Feb 24</span></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="section-card">
+            <div class="section-header"><div class="section-title"><span>📁</span> Active Projects</div><button class="btn btn-ghost" style="font-size:12px;padding:5px 10px" onclick="showPage('projects',null)">View All</button></div>
+            <div class="project-list">
+              <div class="project-item"><div class="project-color" style="background:#0ea5e9"></div><div style="flex:1"><div class="project-name">Euro Market Expansion</div><div class="project-meta"><span class="tag active-tag">Active</span><span style="font-size:11px;color:var(--muted)">Germany, Netherlands, UK</span></div></div><div class="project-progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:68%;background:var(--accent)"></div></div><div class="progress-pct">68%</div></div></div>
+              <div class="project-item"><div class="project-color" style="background:#f59e0b"></div><div style="flex:1"><div class="project-name">Keystone Exports Campaign</div><div class="project-meta"><span class="tag active-tag">Active</span><span style="font-size:11px;color:var(--muted)">UAE, Saudi Arabia</span></div></div><div class="project-progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:45%;background:var(--accent2)"></div></div><div class="progress-pct">45%</div></div></div>
+              <div class="project-item"><div class="project-color" style="background:#10b981"></div><div style="flex:1"><div class="project-name">AgriExport Campaign</div><div class="project-meta"><span class="tag new-tag">New</span><span style="font-size:11px;color:var(--muted)">USA, Canada</span></div></div><div class="project-progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:20%;background:var(--accent3)"></div></div><div class="progress-pct">20%</div></div></div>
+              <div class="project-item"><div class="project-color" style="background:#8b5cf6"></div><div style="flex:1"><div class="project-name">Pharma Export — Client B</div><div class="project-meta"><span class="tag hold-tag">On Hold</span><span style="font-size:11px;color:var(--muted)">South Africa</span></div></div><div class="project-progress-wrap"><div class="progress-bar"><div class="progress-fill" style="width:33%;background:#8b5cf6"></div></div><div class="progress-pct">33%</div></div></div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div class="section-card">
+              <div class="section-header"><div class="section-title"><span>📅</span> Upcoming Deadlines</div></div>
+              <div class="deadline-list">
+                <div class="deadline-item"><div class="deadline-date"><span class="day">01</span><span class="mon">Mar</span></div><div class="deadline-info"><div class="dtitle">SIMEC Report — Textile</div><div class="dsub">Keystone Exports</div></div><div class="deadline-urgency"><span class="tag" style="background:rgba(239,68,68,0.15);color:#f87171;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;">Overdue</span></div></div>
+                <div class="deadline-item"><div class="deadline-date"><span class="day">03</span><span class="mon">Mar</span></div><div class="deadline-info"><div class="dtitle">Spices Gap Analysis</div><div class="dsub">AgriExport Campaign</div></div><div class="deadline-urgency"><span class="tag" style="background:rgba(245,158,11,0.15);color:var(--accent2);font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;">Soon</span></div></div>
+                <div class="deadline-item"><div class="deadline-date"><span class="day">04</span><span class="mon">Mar</span></div><div class="deadline-info"><div class="dtitle">Performance Report</div><div class="dsub">Reporting Cycle</div></div><div class="deadline-urgency"><span class="tag" style="background:rgba(14,165,233,0.15);color:var(--accent);font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;">3 days</span></div></div>
+              </div>
+            </div>
+            <div class="section-card">
+              <div class="section-header"><div class="section-title"><span>⚡</span> Recent Activity</div></div>
+              <div class="activity-list">
+                <div class="activity-item"><div class="activity-dot" style="background:var(--wa)"></div><div><div class="activity-text"><strong>Priya K.</strong> sent WA to Mehta Ceramics</div><div class="activity-time">5 min ago</div></div></div>
+                <div class="activity-item"><div class="activity-dot" style="background:var(--accent)"></div><div><div class="activity-text"><strong>Rajan S.</strong> called AgroFresh · 8 min</div><div class="activity-time">1 hour ago</div></div></div>
+                <div class="activity-item"><div class="activity-dot" style="background:var(--accent3)"></div><div><div class="activity-text"><strong>Rajan S.</strong> completed "SIMEC UK launch"</div><div class="activity-time">3 hours ago</div></div></div>
+                <div class="activity-item"><div class="activity-dot" style="background:var(--accent2)"></div><div><div class="activity-text"><strong>Priya K.</strong> uploaded buyer DB — DE</div><div class="activity-time">Yesterday</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== CLIENTS ===== -->
+      <div class="page" id="page-clients">
+        <div style="margin-bottom:20px;display:flex;align-items:center;justify-content:space-between">
+          <div><div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600">Clients</div><div style="font-size:13px;color:var(--muted);margin-top:2px">Manage your MSME export clients</div></div>
+          <button class="btn btn-primary">+ Add Client</button>
+        </div>
+        <div class="section-card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Client</th>
+                  <th>Sector</th>
+                  <th>Target Markets</th>
+                  <th>Plan</th>
+                  <th>Status</th>
+                  <th>Contact</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div class="client-name">Mehta Ceramics</div><div class="client-company">Ahmedabad, GJ</div></td>
+                  <td>Ceramics</td>
+                  <td>UAE, Saudi Arabia</td>
+                  <td>₹22,500/mo</td>
+                  <td><span class="pill onboard-pill"><span class="pill-dot"></span>Onboarding</span></td>
+                  <td style="color:var(--muted);font-size:12px">+91 98765 43210</td>
+                  <td>
+                    <div class="action-btns">
+                      <a class="icon-btn wa wa-pulse" href="https://wa.me/919876543210?text=Hello%20Mehta%20Ceramics%2C%20this%20is%20Export%20Support%20India.%20Following%20up%20on%20your%20onboarding." target="_blank" onclick="showToast('📲 Opening WhatsApp for Mehta Ceramics...')">
+                        <span>💬</span> WhatsApp
+                      </a>
+                      <a class="icon-btn call" href="tel:+919876543210" onclick="showToast('📞 Calling Mehta Ceramics...')">
+                        <span>📞</span> Call
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><div class="client-name">Sunrise Pharma Ltd.</div><div class="client-company">Mumbai, MH</div></td>
+                  <td>Pharmaceuticals</td>
+                  <td>South Africa, Kenya</td>
+                  <td>₹45,000/mo</td>
+                  <td><span class="pill hold-pill"><span class="pill-dot"></span>On Hold</span></td>
+                  <td style="color:var(--muted);font-size:12px">+91 91234 56789</td>
+                  <td>
+                    <div class="action-btns">
+                      <a class="icon-btn wa" href="https://wa.me/919123456789?text=Hello%20Sunrise%20Pharma%2C%20this%20is%20Export%20Support%20India.%20We%20wanted%20to%20discuss%20resuming%20your%20export%20campaign." target="_blank" onclick="showToast('📲 Opening WhatsApp for Sunrise Pharma...')">
+                        <span>💬</span> WhatsApp
+                      </a>
+                      <a class="icon-btn call" href="tel:+919123456789" onclick="showToast('📞 Calling Sunrise Pharma...')">
+                        <span>📞</span> Call
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><div class="client-name">AgroFresh Exports</div><div class="client-company">Pune, MH</div></td>
+                  <td>Agriculture</td>
+                  <td>USA, Canada, UK</td>
+                  <td>₹22,500/mo</td>
+                  <td><span class="pill active-pill"><span class="pill-dot"></span>Active</span></td>
+                  <td style="color:var(--muted);font-size:12px">+91 87654 32109</td>
+                  <td>
+                    <div class="action-btns">
+                      <a class="icon-btn wa" href="https://wa.me/918765432109?text=Hello%20AgroFresh%2C%20this%20is%20Export%20Support%20India.%20Here's%20an%20update%20on%20your%20campaign." target="_blank" onclick="showToast('📲 Opening WhatsApp for AgroFresh...')">
+                        <span>💬</span> WhatsApp
+                      </a>
+                      <a class="icon-btn call" href="tel:+918765432109" onclick="showToast('📞 Calling AgroFresh...')">
+                        <span>📞</span> Call
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><div class="client-name">Radha Textiles</div><div class="client-company">Surat, GJ</div></td>
+                  <td>Textiles</td>
+                  <td>Germany, Netherlands</td>
+                  <td>₹22,500/mo</td>
+                  <td><span class="pill active-pill"><span class="pill-dot"></span>Active</span></td>
+                  <td style="color:var(--muted);font-size:12px">+91 99887 76655</td>
+                  <td>
+                    <div class="action-btns">
+                      <a class="icon-btn wa" href="https://wa.me/919988776655?text=Hello%20Radha%20Textiles%2C%20this%20is%20Export%20Support%20India.%20Your%20Euro%20campaign%20update%20is%20ready." target="_blank" onclick="showToast('📲 Opening WhatsApp for Radha Textiles...')">
+                        <span>💬</span> WhatsApp
+                      </a>
+                      <a class="icon-btn call" href="tel:+919988776655" onclick="showToast('📞 Calling Radha Textiles...')">
+                        <span>📞</span> Call
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><div class="client-name">Keystone Infra Co.</div><div class="client-company">Delhi, DL</div></td>
+                  <td>Infrastructure</td>
+                  <td>Qatar, Oman</td>
+                  <td>₹67,500/mo</td>
+                  <td><span class="pill active-pill"><span class="pill-dot"></span>Active</span></td>
+                  <td style="color:var(--muted);font-size:12px">+91 98110 00123</td>
+                  <td>
+                    <div class="action-btns">
+                      <a class="icon-btn wa" href="https://wa.me/919811000123?text=Hello%20Keystone%20Infra%2C%20this%20is%20Export%20Support%20India.%20Your%20SIMEC%20report%20is%20ready%20for%20review." target="_blank" onclick="showToast('📲 Opening WhatsApp for Keystone Infra...')">
+                        <span>💬</span> WhatsApp
+                      </a>
+                      <a class="icon-btn call" href="tel:+919811000123" onclick="showToast('📞 Calling Keystone Infra...')">
+                        <span>📞</span> Call
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== WHATSAPP & CALLS PAGE ===== -->
+      <div class="page" id="page-comms">
+        <div style="margin-bottom:20px;display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600">WhatsApp & Calls</div>
+            <div style="font-size:13px;color:var(--muted);margin-top:2px">Communication log with all clients</div>
+          </div>
+        </div>
+
+        <!-- STATS -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px">
+          <div class="stat-card wagreen"><div class="stat-label">WA Sent Today</div><div class="stat-value wagreen">7</div></div>
+          <div class="stat-card blue"><div class="stat-label">Calls Today</div><div class="stat-value blue">4</div></div>
+          <div class="stat-card amber"><div class="stat-label">Follow-ups Due</div><div class="stat-value amber">3</div></div>
+          <div class="stat-card green"><div class="stat-label">Replied</div><div class="stat-value green">5</div></div>
+        </div>
+
+        <div class="comms-grid">
+          <!-- CLIENT LIST -->
+          <div class="comms-list">
+            <div class="comms-list-header">Clients <span style="color:var(--muted);font-weight:400;font-size:12px">(5)</span></div>
+            <div class="comms-list-body">
+              <div class="comms-client-item active" onclick="selectClient('mehta')">
+                <div class="comms-avatar" style="background:linear-gradient(135deg,#0ea5e9,#6366f1)">MC</div>
+                <div style="flex:1;min-width:0">
+                  <div class="comms-name">Mehta Ceramics</div>
+                  <div class="comms-last">Following up on onboarding docs...</div>
+                </div>
+                <div class="comms-unread">2</div>
+              </div>
+              <div class="comms-client-item" onclick="selectClient('agro')">
+                <div class="comms-avatar" style="background:linear-gradient(135deg,#10b981,#059669)">AF</div>
+                <div style="flex:1;min-width:0">
+                  <div class="comms-name">AgroFresh Exports</div>
+                  <div class="comms-last">USA buyer list shared ✓</div>
+                </div>
+                <div class="comms-unread">1</div>
+              </div>
+              <div class="comms-client-item" onclick="selectClient('radha')">
+                <div class="comms-avatar" style="background:linear-gradient(135deg,#f59e0b,#d97706)">RT</div>
+                <div style="flex:1;min-width:0">
+                  <div class="comms-name">Radha Textiles</div>
+                  <div class="comms-last">Called · 12 min · Feb 26</div>
+                </div>
+              </div>
+              <div class="comms-client-item" onclick="selectClient('keystone')">
+                <div class="comms-avatar" style="background:linear-gradient(135deg,#8b5cf6,#6366f1)">KI</div>
+                <div style="flex:1;min-width:0">
+                  <div class="comms-name">Keystone Infra Co.</div>
+                  <div class="comms-last">SIMEC report ready for review</div>
+                </div>
+              </div>
+              <div class="comms-client-item" onclick="selectClient('sunrise')">
+                <div class="comms-avatar" style="background:linear-gradient(135deg,#ef4444,#dc2626)">SP</div>
+                <div style="flex:1;min-width:0">
+                  <div class="comms-name">Sunrise Pharma</div>
+                  <div class="comms-last">On hold — awaiting response</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- LOG PANEL -->
+          <div class="comms-panel" id="comms-panel">
+            <div class="comms-panel-header">
+              <div class="comms-panel-info">
+                <div class="comms-avatar" id="panel-avatar" style="background:linear-gradient(135deg,#0ea5e9,#6366f1)">MC</div>
+                <div>
+                  <div class="comms-panel-name" id="panel-name">Mehta Ceramics</div>
+                  <div class="comms-panel-sub" id="panel-sub">+91 98765 43210 · Ahmedabad</div>
+                </div>
+              </div>
+              <div class="comms-panel-btns">
+                <a class="icon-btn wa" id="panel-wa-btn" href="https://wa.me/919876543210?text=Hello%20Mehta%20Ceramics%2C%20this%20is%20Export%20Support%20India." target="_blank" onclick="showToast('📲 Opening WhatsApp...')">
+                  💬 WhatsApp
+                </a>
+                <a class="icon-btn call" id="panel-call-btn" href="tel:+919876543210" onclick="showToast('📞 Initiating call...')">
+                  📞 Call
+                </a>
+              </div>
+            </div>
+            <div class="log-list" id="log-list">
+              <!-- populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== PROJECTS ===== -->
+      <div class="page" id="page-projects">
+        <div style="margin-bottom:20px;display:flex;align-items:center;justify-content:space-between">
+          <div><div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600">Projects</div><div style="font-size:13px;color:var(--muted);margin-top:2px">All active export campaigns</div></div>
+          <button class="btn btn-primary">+ New Project</button>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card blue"><div class="stat-label">Total Projects</div><div class="stat-value blue">8</div></div>
+          <div class="stat-card green"><div class="stat-label">On Track</div><div class="stat-value green">5</div></div>
+          <div class="stat-card amber"><div class="stat-label">At Risk</div><div class="stat-value amber">2</div></div>
+          <div class="stat-card red"><div class="stat-label">Overdue</div><div class="stat-value red">1</div></div>
+        </div>
+        <div class="section-card">
+          <div class="section-header"><div class="section-title"><span>📁</span> All Projects</div><div class="tabs"><div class="tab active">All</div><div class="tab">Active</div><div class="tab">On Hold</div><div class="tab">Done</div></div></div>
+          <div class="project-list" style="padding:12px">
+            <div class="project-item" style="padding:14px"><div class="project-color" style="background:#0ea5e9;width:12px;height:12px;border-radius:4px"></div><div style="flex:1"><div class="project-name">Euro Market Expansion</div><div class="project-meta"><span class="tag active-tag">Active</span><span style="font-size:11px;color:var(--muted)">Germany, Netherlands, UK · Radha Textiles</span></div></div><div class="project-progress-wrap"><div class="progress-bar" style="width:90px"><div class="progress-fill" style="width:68%;background:var(--accent)"></div></div><div class="progress-pct">68%</div></div><div style="width:80px;text-align:right;font-size:12px;color:var(--muted)">12 tasks</div></div>
+            <div class="project-item" style="padding:14px"><div class="project-color" style="background:#f59e0b;width:12px;height:12px;border-radius:4px"></div><div style="flex:1"><div class="project-name">Keystone Exports Campaign</div><div class="project-meta"><span class="tag active-tag">Active</span><span style="font-size:11px;color:var(--muted)">UAE, Saudi Arabia · Keystone Infra</span></div></div><div class="project-progress-wrap"><div class="progress-bar" style="width:90px"><div class="progress-fill" style="width:45%;background:var(--accent2)"></div></div><div class="progress-pct">45%</div></div><div style="width:80px;text-align:right;font-size:12px;color:var(--muted)">9 tasks</div></div>
+            <div class="project-item" style="padding:14px"><div class="project-color" style="background:#10b981;width:12px;height:12px;border-radius:4px"></div><div style="flex:1"><div class="project-name">AgriExport Campaign</div><div class="project-meta"><span class="tag new-tag">New</span><span style="font-size:11px;color:var(--muted)">USA, Canada · AgroFresh Exports</span></div></div><div class="project-progress-wrap"><div class="progress-bar" style="width:90px"><div class="progress-fill" style="width:20%;background:var(--accent3)"></div></div><div class="progress-pct">20%</div></div><div style="width:80px;text-align:right;font-size:12px;color:var(--muted)">6 tasks</div></div>
+            <div class="project-item" style="padding:14px"><div class="project-color" style="background:#8b5cf6;width:12px;height:12px;border-radius:4px"></div><div style="flex:1"><div class="project-name">Pharma Export — Client B</div><div class="project-meta"><span class="tag hold-tag">On Hold</span><span style="font-size:11px;color:var(--muted)">South Africa · Sunrise Pharma</span></div></div><div class="project-progress-wrap"><div class="progress-bar" style="width:90px"><div class="progress-fill" style="width:33%;background:#8b5cf6"></div></div><div class="progress-pct">33%</div></div><div style="width:80px;text-align:right;font-size:12px;color:var(--muted)">7 tasks</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== TASKS ===== -->
+      <div class="page" id="page-tasks">
+        <div style="margin-bottom:20px;display:flex;align-items:center;justify-content:space-between">
+          <div><div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600">My Tasks</div><div style="font-size:13px;color:var(--muted);margin-top:2px">5 pending · 3 overdue</div></div>
+          <button class="btn btn-primary" onclick="openModal()">+ New Task</button>
+        </div>
+        <div class="section-card">
+          <div class="task-columns">
+            <div class="task-col">
+              <div class="task-col-header"><div class="task-col-title"><div class="col-dot todo"></div>To Do</div><div class="col-count">2</div></div>
+              <div class="task-card"><div class="task-title">Prepare SIMEC Report — Textile Sector</div><div class="task-project">📁 Keystone Exports</div><div class="task-footer"><span class="task-priority priority-high">High</span><span class="task-due overdue">Mar 1</span></div></div>
+              <div class="task-card"><div class="task-title">Compile demand-supply gap — Spices</div><div class="task-project">📁 AgriExport</div><div class="task-footer"><span class="task-priority priority-high">High</span><span class="task-due overdue">Mar 3</span></div></div>
+            </div>
+            <div class="task-col">
+              <div class="task-col-header"><div class="task-col-title"><div class="col-dot inprogress"></div>In Progress</div><div class="col-count">2</div></div>
+              <div class="task-card"><div class="task-title">Buyer database — Germany</div><div class="task-project">📁 Euro Market</div><div class="task-footer"><span class="task-priority priority-high">High</span><span class="task-due">Mar 2</span></div></div>
+              <div class="task-card"><div class="task-title">Monthly performance report</div><div class="task-project">📁 Reporting</div><div class="task-footer"><span class="task-priority priority-med">Medium</span><span class="task-due">Mar 4</span></div></div>
+            </div>
+            <div class="task-col">
+              <div class="task-col-header"><div class="task-col-title"><div class="col-dot done"></div>Done</div><div class="col-count">3</div></div>
+              <div class="task-card" style="opacity:0.6"><div class="task-title">Export scope analysis — Ceramics</div><div class="task-project">📁 Keystone Exports</div><div class="task-footer"><span class="task-priority priority-med">Medium</span><span class="task-due">Feb 26</span></div></div>
+              <div class="task-card" style="opacity:0.6"><div class="task-title">SIMEC campaign launched — UK</div><div class="task-project">📁 Euro Market</div><div class="task-footer"><span class="task-priority priority-high">High</span><span class="task-due">Feb 20</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER PAGES -->
+      <div class="page" id="page-markets"><div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600;margin-bottom:8px">Market Campaigns</div><div class="section-card" style="margin-top:20px"><div class="empty-state"><div class="icon">🗺️</div><p>Market campaign details coming in the full build.</p></div></div></div>
+      <div class="page" id="page-reports"><div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600;margin-bottom:8px">Reports</div><div class="section-card" style="margin-top:20px"><div class="empty-state"><div class="icon">📈</div><p>Reporting module coming in the full build.</p></div></div></div>
+      <div class="page" id="page-team"><div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600;margin-bottom:8px">Team</div><div class="section-card" style="margin-top:20px"><div class="empty-state"><div class="icon">👥</div><p>Team management coming in the full build.</p></div></div></div>
+      <div class="page" id="page-settings"><div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600;margin-bottom:8px">Settings</div><div class="section-card" style="margin-top:20px"><div class="empty-state"><div class="icon">⚙️</div><p>Settings panel coming in the full build.</p></div></div></div>
+
+    </div>
+  </div>
+</div>
+
+<!-- NEW TASK MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-title">New Task <div class="modal-close" onclick="closeModal()">✕</div></div>
+    <div class="form-group"><label class="form-label">Task Title</label><input class="form-input" type="text" placeholder="e.g. Prepare buyer database for UAE" id="task-title-input"/></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Project</label><select class="form-input"><option>Euro Market Expansion</option><option>Keystone Exports Campaign</option><option>AgriExport Campaign</option><option>Pharma Export</option><option>Internal Ops</option></select></div>
+      <div class="form-group"><label class="form-label">Priority</label><select class="form-input"><option>High</option><option>Medium</option><option>Low</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Assign To</label><select class="form-input"><option>Rajan S.</option><option>Priya K.</option><option>Amit M.</option><option>Meera V.</option></select></div>
+      <div class="form-group"><label class="form-label">Due Date</label><input class="form-input" type="date"/></div>
+    </div>
+    <div class="form-group"><label class="form-label">Description</label><textarea class="form-input" rows="3" placeholder="Add task details..." style="resize:vertical"></textarea></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:4px">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveTask()">Create Task</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✅ Done!</div>
+
+<script>
+// ---- CLIENT DATA ----
+const CLIENTS = {
+  mehta: {
+    name: 'Mehta Ceramics', sub: '+91 98765 43210 · Ahmedabad',
+    avatar: 'MC', avatarBg: 'linear-gradient(135deg,#0ea5e9,#6366f1)',
+    phone: '+919876543210',
+    waMsg: 'Hello Mehta Ceramics, this is Export Support India. Following up on your onboarding.',
+    logs: [
+      { type:'wa', icon:'💬', note:'Sent onboarding checklist and document requirements.', time:'Today, 10:22 AM', duration:null },
+      { type:'call', icon:'📞', note:'Introductory call with Mr. Mehta. Discussed UAE market entry timeline.', time:'Feb 26, 3:15 PM', duration:'9 min' },
+      { type:'wa', icon:'💬', note:'Shared Export Support India brochure and pricing plans.', time:'Feb 25, 11:00 AM', duration:null },
+    ]
+  },
+  agro: {
+    name: 'AgroFresh Exports', sub: '+91 87654 32109 · Pune',
+    avatar: 'AF', avatarBg: 'linear-gradient(135deg,#10b981,#059669)',
+    phone: '+918765432109',
+    waMsg: 'Hello AgroFresh, this is Export Support India. Here is your campaign update.',
+    logs: [
+      { type:'wa', icon:'💬', note:'Shared USA buyer list — 34 qualified leads identified.', time:'Today, 9:00 AM', duration:null },
+      { type:'call', icon:'📞', note:'Weekly sync call with Priya from AgroFresh. Reviewed market gaps in Canada.', time:'Feb 25, 4:00 PM', duration:'18 min' },
+      { type:'wa', icon:'💬', note:'Sent monthly performance report PDF.', time:'Feb 20, 12:00 PM', duration:null },
+    ]
+  },
+  radha: {
+    name: 'Radha Textiles', sub: '+91 99887 76655 · Surat',
+    avatar: 'RT', avatarBg: 'linear-gradient(135deg,#f59e0b,#d97706)',
+    phone: '+919988776655',
+    waMsg: 'Hello Radha Textiles, this is Export Support India. Your Euro campaign update is ready.',
+    logs: [
+      { type:'call', icon:'📞', note:'Discussed German buyer feedback. 3 interested parties confirmed.', time:'Feb 26, 2:00 PM', duration:'12 min' },
+      { type:'wa', icon:'💬', note:'Sent translated product catalogue for German buyers.', time:'Feb 22, 10:30 AM', duration:null },
+    ]
+  },
+  keystone: {
+    name: 'Keystone Infra Co.', sub: '+91 98110 00123 · Delhi',
+    avatar: 'KI', avatarBg: 'linear-gradient(135deg,#8b5cf6,#6366f1)',
+    phone: '+919811000123',
+    waMsg: 'Hello Keystone Infra, this is Export Support India. Your SIMEC report is ready for review.',
+    logs: [
+      { type:'wa', icon:'💬', note:'SIMEC report for Qatar market sent for review.', time:'Today, 8:45 AM', duration:null },
+      { type:'call', icon:'📞', note:'Strategy call with Keystone Director. Finalized Oman entry plan.', time:'Feb 24, 11:00 AM', duration:'24 min' },
+      { type:'wa', icon:'💬', note:'Shared list of 12 infrastructure buyers from Oman.', time:'Feb 18, 3:00 PM', duration:null },
+      { type:'call', icon:'📞', note:'Onboarding call — aligned on SIMEC campaign goals.', time:'Feb 12, 10:00 AM', duration:'35 min' },
+    ]
+  },
+  sunrise: {
+    name: 'Sunrise Pharma', sub: '+91 91234 56789 · Mumbai',
+    avatar: 'SP', avatarBg: 'linear-gradient(135deg,#ef4444,#dc2626)',
+    phone: '+919123456789',
+    waMsg: 'Hello Sunrise Pharma, this is Export Support India. We wanted to discuss resuming your campaign.',
+    logs: [
+      { type:'wa', icon:'💬', note:'Sent follow-up message regarding campaign hold status.', time:'Feb 23, 9:00 AM', duration:null },
+      { type:'call', icon:'📞', note:'Discussed reason for hold — regulatory clearance pending.', time:'Feb 20, 2:30 PM', duration:'8 min' },
+    ]
+  }
+};
+
+function selectClient(id) {
+  const c = CLIENTS[id];
+  // update header
+  document.getElementById('panel-avatar').textContent = c.avatar;
+  document.getElementById('panel-avatar').style.background = c.avatarBg;
+  document.getElementById('panel-name').textContent = c.name;
+  document.getElementById('panel-sub').textContent = c.sub;
+
+  // update buttons
+  const waUrl = `https://wa.me/${c.phone}?text=${encodeURIComponent(c.waMsg)}`;
+  document.getElementById('panel-wa-btn').href = waUrl;
+  document.getElementById('panel-wa-btn').onclick = () => showToast(`📲 Opening WhatsApp for ${c.name}...`);
+  document.getElementById('panel-call-btn').href = `tel:${c.phone}`;
+  document.getElementById('panel-call-btn').onclick = () => showToast(`📞 Calling ${c.name}...`);
+
+  // update log
+  const list = document.getElementById('log-list');
+  list.innerHTML = c.logs.map(l => `
+    <div class="log-entry">
+      <div class="log-icon">${l.icon}</div>
+      <div style="flex:1">
+        <div class="log-type ${l.type}">${l.type === 'wa' ? 'WhatsApp' : 'Phone Call'} ${l.duration ? `<span class="log-duration">⏱ ${l.duration}</span>` : ''}</div>
+        <div class="log-note">${l.note}</div>
+        <div class="log-time">${l.time}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // highlight active
+  document.querySelectorAll('.comms-client-item').forEach(el => el.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+
+// Init log on page load
+window.addEventListener('DOMContentLoaded', () => {
+  const list = document.getElementById('log-list');
+  const c = CLIENTS.mehta;
+  list.innerHTML = c.logs.map(l => `
+    <div class="log-entry">
+      <div class="log-icon">${l.icon}</div>
+      <div style="flex:1">
+        <div class="log-type ${l.type}">${l.type === 'wa' ? 'WhatsApp' : 'Phone Call'} ${l.duration ? `<span class="log-duration">⏱ ${l.duration}</span>` : ''}</div>
+        <div class="log-note">${l.note}</div>
+        <div class="log-time">${l.time}</div>
+      </div>
+    </div>
+  `).join('');
+});
+
+// PAGE NAV
+function showPage(name, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const titles = { dashboard:['Dashboard','Overview'], projects:['Projects','All Campaigns'], tasks:['My Tasks','Pending & Active'], clients:['Clients','MSME Partners'], comms:['WhatsApp & Calls','Communication Log'], markets:['Market Campaigns','SIMEC'], reports:['Reports','Analytics'], team:['Team','Members'], settings:['Settings','Preferences'] };
+  const t = titles[name] || [name,''];
+  document.getElementById('page-title').innerHTML = t[0]+' <span>'+t[1]+'</span>';
+}
+
+// MODAL
+function openModal() { document.getElementById('modal-overlay').classList.add('open'); setTimeout(()=>document.getElementById('task-title-input').focus(),250); }
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+function handleOverlayClick(e) { if(e.target===document.getElementById('modal-overlay'))closeModal(); }
+function saveTask() {
+  const title = document.getElementById('task-title-input').value.trim();
+  if(!title){document.getElementById('task-title-input').style.borderColor='var(--danger)';return;}
+  closeModal(); showToast('✅ Task "'+title.substring(0,28)+(title.length>28?'…':'')+'" created!');
+  document.getElementById('task-title-input').value='';
+}
+
+// TOAST
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show';
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// TABS
+document.querySelectorAll('.tabs').forEach(g=>{
+  g.querySelectorAll('.tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{ g.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); tab.classList.add('active'); });
+  });
+});
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+</script>
+</body>
+</html>
