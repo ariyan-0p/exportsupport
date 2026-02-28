@@ -10,11 +10,14 @@
   --bg: #0b0f1a;
   --surface: #111827;
   --surface2: #1a2235;
+  --surface3: #202d40;
   --border: rgba(255,255,255,0.07);
   --accent: #0ea5e9;
   --accent2: #f59e0b;
   --accent3: #10b981;
   --wa: #25d366;
+  --li: #0077b5;
+  --email: #a855f7;
   --danger: #ef4444;
   --text: #f1f5f9;
   --muted: #64748b;
@@ -22,22 +25,22 @@
   --sidebar-w: 240px;
   --topbar-h: 56px;
   --bottom-nav-h: 64px;
+
+  /* Ratings */
+  --r-excellent: #10b981;
+  --r-good: #0ea5e9;
+  --r-neutral: #f59e0b;
+  --r-poor: #ef4444;
+  --r-noresponse: #64748b;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{height:100%;overflow-x:hidden;}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-/* ─── LAYOUT ─── */
 .app{display:flex;min-height:100vh;}
 
 /* ─── SIDEBAR ─── */
-.sidebar{
-  width:var(--sidebar-w);background:var(--surface);
-  border-right:1px solid var(--border);
-  display:flex;flex-direction:column;
-  position:fixed;top:0;left:0;height:100vh;z-index:200;
-  transition:transform .3s ease;
-}
+.sidebar{width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:200;transition:transform .3s ease;}
 .sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid var(--border);}
 .logo-mark{display:flex;align-items:center;gap:10px;}
 .logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),#6366f1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
@@ -53,19 +56,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .nav-badge.amber{background:var(--accent2);}
 .nav-badge.green{background:var(--accent3);}
 .nav-badge.wa{background:var(--wa);}
+.nav-badge.purple{background:#8b5cf6;}
 .sidebar-user{padding:14px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;}
 .avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#6366f1,var(--accent));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
 .user-info .name{font-size:13px;font-weight:600;}
 .user-info .role{font-size:11px;color:var(--muted);}
-
-/* Sidebar overlay (mobile) */
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:199;backdrop-filter:blur(2px);}
 .sidebar-overlay.open{display:block;}
 
 /* ─── MAIN ─── */
 .main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-width:0;}
-
-/* ─── TOPBAR ─── */
 .topbar{height:var(--topbar-h);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;position:sticky;top:0;z-index:50;}
 .hamburger{display:none;width:34px;height:34px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);align-items:center;justify-content:center;cursor:pointer;font-size:18px;flex-shrink:0;}
 .topbar-title{font-family:'Fraunces',serif;font-size:18px;font-weight:600;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -77,22 +77,25 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .notif-btn{width:34px;height:34px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;position:relative;flex-shrink:0;}
 .notif-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--danger);border:2px solid var(--surface);}
 
-/* Buttons */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .15s;text-decoration:none;white-space:nowrap;}
 .btn-primary{background:var(--accent);color:#fff;}
 .btn-primary:hover{background:#0284c7;transform:translateY(-1px);}
 .btn-ghost{background:var(--surface2);color:var(--muted2);border:1px solid var(--border);}
 .btn-ghost:hover{color:var(--text);}
+.btn-danger{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.25);}
+.btn-success{background:rgba(16,185,129,.15);color:var(--accent3);border:1px solid rgba(16,185,129,.25);}
+
 .icon-btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:6px 11px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .15s;text-decoration:none;white-space:nowrap;}
 .icon-btn.wa{background:rgba(37,211,102,.12);color:var(--wa);border:1px solid rgba(37,211,102,.25);}
-.icon-btn.wa:hover{background:rgba(37,211,102,.22);transform:translateY(-1px);}
+.icon-btn.wa:hover{background:rgba(37,211,102,.22);}
 .icon-btn.call{background:rgba(14,165,233,.12);color:var(--accent);border:1px solid rgba(14,165,233,.25);}
-.icon-btn.call:hover{background:rgba(14,165,233,.22);transform:translateY(-1px);}
+.icon-btn.call:hover{background:rgba(14,165,233,.22);}
+.icon-btn.li{background:rgba(0,119,181,.12);color:var(--li);border:1px solid rgba(0,119,181,.25);}
+.icon-btn.li:hover{background:rgba(0,119,181,.22);}
+.icon-btn.email{background:rgba(168,85,247,.12);color:var(--email);border:1px solid rgba(168,85,247,.25);}
+.icon-btn.email:hover{background:rgba(168,85,247,.22);}
 
-/* ─── CONTENT ─── */
 .content{padding:20px;flex:1;}
-
-/* Stats */
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 18px;position:relative;overflow:hidden;transition:transform .2s;}
 .stat-card:hover{transform:translateY(-2px);}
@@ -102,6 +105,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .stat-card.green::before{background:var(--accent3);}
 .stat-card.red::before{background:var(--danger);}
 .stat-card.wagreen::before{background:var(--wa);}
+.stat-card.purple::before{background:#8b5cf6;}
 .stat-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
 .stat-value{font-family:'Fraunces',serif;font-size:28px;font-weight:700;line-height:1;}
 .stat-value.blue{color:var(--accent);}
@@ -109,23 +113,21 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .stat-value.green{color:var(--accent3);}
 .stat-value.red{color:var(--danger);}
 .stat-value.wagreen{color:var(--wa);}
+.stat-value.purple{color:#8b5cf6;}
 .stat-sub{font-size:11px;color:var(--muted);margin-top:5px;}
 .stat-sub .up{color:var(--accent3);}
 
-/* Section card */
 .section-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px;}
 .section-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);}
 .section-title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;}
 
-/* Two col */
 .two-col{display:grid;grid-template-columns:1fr 320px;gap:16px;}
-
-/* Tabs */
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
 .tabs{display:flex;gap:2px;background:var(--surface2);border-radius:8px;padding:3px;}
 .tab{padding:5px 10px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;color:var(--muted);transition:all .15s;}
 .tab.active{background:var(--surface);color:var(--text);}
 
-/* Kanban */
+/* Task board */
 .task-columns{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:14px;}
 .task-col-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .task-col-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:6px;}
@@ -146,7 +148,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .task-due{font-size:11px;color:var(--muted);}
 .task-due.overdue{color:#f87171;}
 
-/* Projects */
 .project-list{padding:8px;}
 .project-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;cursor:pointer;transition:background .15s;border:1px solid transparent;margin-bottom:4px;}
 .project-item:hover{background:var(--surface2);border-color:var(--border);}
@@ -162,7 +163,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .tag.hold-tag{background:rgba(245,158,11,.15);color:var(--accent2);}
 .tag.new-tag{background:rgba(14,165,233,.15);color:var(--accent);}
 
-/* Activity / deadline */
 .activity-list{padding:8px 16px 12px;}
 .activity-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
 .activity-item:last-child{border-bottom:none;}
@@ -180,7 +180,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .deadline-info .dsub{font-size:11px;color:var(--muted);margin-top:2px;}
 .deadline-urgency{margin-left:auto;}
 
-/* ─── TABLE ─── */
 .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
 table{width:100%;border-collapse:collapse;min-width:600px;}
 thead tr{border-bottom:1px solid var(--border);}
@@ -198,7 +197,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
 .pill.onboard-pill .pill-dot{background:var(--accent);}
 .pill.hold-pill{background:rgba(245,158,11,.15);color:var(--accent2);}
 .pill.hold-pill .pill-dot{background:var(--accent2);}
-.action-btns{display:flex;gap:6px;align-items:center;}
+.action-btns{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
 
 /* ─── COMMS ─── */
 .comms-grid{display:grid;grid-template-columns:280px 1fr;gap:16px;height:calc(100vh - 160px);}
@@ -215,7 +214,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
 .comms-panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;}
 .comms-panel-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
 .comms-panel-info{display:flex;align-items:center;gap:12px;}
-.comms-panel-btns{display:flex;gap:8px;}
+.comms-panel-btns{display:flex;gap:8px;flex-wrap:wrap;}
 .comms-panel-name{font-size:15px;font-weight:700;}
 .comms-panel-sub{font-size:11px;color:var(--muted);margin-top:2px;}
 .log-list{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;}
@@ -224,23 +223,142 @@ tr:hover td{background:rgba(255,255,255,.02);}
 .log-type{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;}
 .log-type.wa{color:var(--wa);}
 .log-type.call{color:var(--accent);}
+.log-type.li{color:var(--li);}
+.log-type.email{color:var(--email);}
 .log-note{font-size:13px;color:var(--muted2);margin-top:3px;line-height:1.5;}
 .log-time{font-size:11px;color:var(--muted);margin-top:4px;}
 .log-duration{display:inline-block;font-size:10px;font-weight:700;background:rgba(14,165,233,.12);color:var(--accent);padding:1px 7px;border-radius:20px;margin-left:6px;}
-
-/* Mobile comms: back button */
 .comms-back{display:none;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer;font-size:13px;font-weight:600;color:var(--accent);}
 
-/* ─── BOTTOM NAV (mobile only) ─── */
-.bottom-nav{
-  display:none;position:fixed;bottom:0;left:0;right:0;
-  height:var(--bottom-nav-h);background:var(--surface);
-  border-top:1px solid var(--border);
-  z-index:150;
-  display:none;
-  grid-template-columns:repeat(5,1fr);
-  align-items:center;
-}
+/* ═══════════════════════
+   PERFORMANCE PAGE STYLES
+═══════════════════════ */
+
+/* Employee cards */
+.emp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:20px;}
+.emp-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:transform .2s,border-color .2s;}
+.emp-card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.12);}
+.emp-card-header{display:flex;align-items:center;gap:12px;padding:16px 16px 12px;}
+.emp-avatar-lg{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0;}
+.emp-name{font-size:15px;font-weight:700;}
+.emp-role{font-size:11px;color:var(--muted);margin-top:2px;}
+.emp-score-badge{margin-left:auto;font-family:'Fraunces',serif;font-size:22px;font-weight:700;padding:4px 10px;border-radius:10px;}
+.score-excellent{color:var(--r-excellent);background:rgba(16,185,129,.12);}
+.score-good{color:var(--r-good);background:rgba(14,165,233,.12);}
+.score-neutral{color:var(--r-neutral);background:rgba(245,158,11,.12);}
+.score-poor{color:var(--r-poor);background:rgba(239,68,68,.12);}
+
+.emp-channels{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-top:1px solid var(--border);}
+.emp-channel{background:var(--surface);padding:10px 8px;text-align:center;cursor:pointer;transition:background .15s;}
+.emp-channel:hover{background:var(--surface2);}
+.emp-channel-icon{font-size:18px;margin-bottom:4px;}
+.emp-channel-count{font-size:16px;font-weight:700;line-height:1;}
+.emp-channel-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:2px;}
+.emp-channel-count.wa-c{color:var(--wa);}
+.emp-channel-count.call-c{color:var(--accent);}
+.emp-channel-count.li-c{color:var(--li);}
+.emp-channel-count.email-c{color:var(--email);}
+
+.emp-footer{padding:10px 16px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.emp-footer-stat{font-size:11px;color:var(--muted);}
+.emp-footer-stat strong{color:var(--text);}
+
+/* Automation Log Table */
+.auto-log-wrap{padding:0;}
+.auto-log-table{width:100%;border-collapse:collapse;}
+.auto-log-table th{padding:10px 14px;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border);white-space:nowrap;}
+.auto-log-table td{padding:10px 14px;font-size:12.5px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.auto-log-table tr:last-child td{border-bottom:none;}
+.auto-log-table tr:hover td{background:rgba(255,255,255,.02);}
+
+/* Channel badge */
+.ch-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;}
+.ch-badge.wa-b{background:rgba(37,211,102,.12);color:var(--wa);}
+.ch-badge.call-b{background:rgba(14,165,233,.12);color:var(--accent);}
+.ch-badge.li-b{background:rgba(0,119,181,.12);color:var(--li);}
+.ch-badge.email-b{background:rgba(168,85,247,.12);color:var(--email);}
+
+/* Satisfaction rating chips */
+.rating-wrap{display:flex;gap:5px;flex-wrap:wrap;}
+.rating-chip{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid transparent;transition:all .15s;white-space:nowrap;}
+.rating-chip:hover{transform:translateY(-1px);}
+.r-excellent{background:rgba(16,185,129,.1);color:var(--r-excellent);border-color:rgba(16,185,129,.25);}
+.r-excellent.selected{background:rgba(16,185,129,.25);border-color:var(--r-excellent);box-shadow:0 0 0 2px rgba(16,185,129,.2);}
+.r-good{background:rgba(14,165,233,.1);color:var(--r-good);border-color:rgba(14,165,233,.25);}
+.r-good.selected{background:rgba(14,165,233,.25);border-color:var(--r-good);box-shadow:0 0 0 2px rgba(14,165,233,.2);}
+.r-neutral{background:rgba(245,158,11,.1);color:var(--r-neutral);border-color:rgba(245,158,11,.25);}
+.r-neutral.selected{background:rgba(245,158,11,.25);border-color:var(--r-neutral);box-shadow:0 0 0 2px rgba(245,158,11,.2);}
+.r-poor{background:rgba(239,68,68,.1);color:var(--r-poor);border-color:rgba(239,68,68,.25);}
+.r-poor.selected{background:rgba(239,68,68,.25);border-color:var(--r-poor);box-shadow:0 0 0 2px rgba(239,68,68,.2);}
+.r-noresponse{background:rgba(100,116,139,.1);color:var(--r-noresponse);border-color:rgba(100,116,139,.25);}
+.r-noresponse.selected{background:rgba(100,116,139,.25);border-color:var(--r-noresponse);box-shadow:0 0 0 2px rgba(100,116,139,.2);}
+
+/* Performance chart bars */
+.perf-bar-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.perf-bar-row:last-child{border-bottom:none;}
+.perf-bar-label{font-size:12px;font-weight:600;min-width:80px;}
+.perf-bar-track{flex:1;height:8px;background:var(--surface2);border-radius:99px;overflow:hidden;}
+.perf-bar-fill{height:100%;border-radius:99px;transition:width .6s ease;}
+.perf-bar-val{font-size:12px;font-weight:700;min-width:30px;text-align:right;color:var(--muted2);}
+
+/* Leaderboard */
+.leaderboard-list{padding:12px 16px;}
+.lb-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+.lb-item:last-child{border-bottom:none;}
+.lb-rank{font-family:'Fraunces',serif;font-size:20px;font-weight:700;min-width:28px;text-align:center;}
+.lb-rank.gold{color:#f59e0b;}
+.lb-rank.silver{color:var(--muted2);}
+.lb-rank.bronze{color:#cd7c2f;}
+.lb-rank.other{color:var(--muted);}
+.lb-avatar{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.lb-name{font-size:13px;font-weight:600;}
+.lb-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.lb-score{margin-left:auto;font-family:'Fraunces',serif;font-size:18px;font-weight:700;}
+.lb-trend{font-size:11px;margin-left:6px;}
+.lb-trend.up{color:var(--accent3);}
+.lb-trend.dn{color:var(--danger);}
+
+/* Channel summary mini cards */
+.channel-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;}
+.ch-mini{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 14px;position:relative;overflow:hidden;}
+.ch-mini::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.ch-mini.wa-mini::before{background:var(--wa);}
+.ch-mini.call-mini::before{background:var(--accent);}
+.ch-mini.li-mini::before{background:var(--li);}
+.ch-mini.email-mini::before{background:var(--email);}
+.ch-mini-icon{font-size:22px;margin-bottom:8px;}
+.ch-mini-val{font-family:'Fraunces',serif;font-size:26px;font-weight:700;}
+.ch-mini-val.wa-v{color:var(--wa);}
+.ch-mini-val.call-v{color:var(--accent);}
+.ch-mini-val.li-v{color:var(--li);}
+.ch-mini-val.email-v{color:var(--email);}
+.ch-mini-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:4px;}
+.ch-mini-rate{font-size:11px;color:var(--muted);margin-top:2px;}
+.ch-mini-rate .pos{color:var(--accent3);}
+
+/* Filter bar */
+.filter-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px;}
+.filter-select{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-size:13px;color:var(--text);font-family:'DM Sans',sans-serif;outline:none;cursor:pointer;}
+.filter-select:focus{border-color:var(--accent);}
+.filter-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+
+/* Automation trigger button */
+.auto-trigger{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all .15s;text-decoration:none;}
+.auto-trigger.wa-t{background:rgba(37,211,102,.15);color:var(--wa);border:1px solid rgba(37,211,102,.3);}
+.auto-trigger.wa-t:hover{background:rgba(37,211,102,.25);}
+.auto-trigger.call-t{background:rgba(14,165,233,.15);color:var(--accent);border:1px solid rgba(14,165,233,.3);}
+.auto-trigger.call-t:hover{background:rgba(14,165,233,.25);}
+.auto-trigger.li-t{background:rgba(0,119,181,.15);color:var(--li);border:1px solid rgba(0,119,181,.3);}
+.auto-trigger.li-t:hover{background:rgba(0,119,181,.25);}
+.auto-trigger.email-t{background:rgba(168,85,247,.15);color:var(--email);border:1px solid rgba(168,85,247,.3);}
+.auto-trigger.email-t:hover{background:rgba(168,85,247,.25);}
+
+/* Pulse animation for WA */
+@keyframes wa-pulse{0%,100%{box-shadow:0 0 0 0 rgba(37,211,102,.4)}50%{box-shadow:0 0 0 6px rgba(37,211,102,0)}}
+.wa-pulse{animation:wa-pulse 2s infinite;}
+
+/* ─── BOTTOM NAV ─── */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:var(--bottom-nav-h);background:var(--surface);border-top:1px solid var(--border);z-index:150;grid-template-columns:repeat(5,1fr);align-items:center;}
 .bottom-nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding:8px 4px;color:var(--muted);transition:color .15s;position:relative;}
 .bottom-nav-item.active{color:var(--accent);}
 .bottom-nav-item .bn-icon{font-size:20px;line-height:1;}
@@ -263,117 +381,258 @@ tr:hover td{background:rgba(255,255,255,.02);}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 select.form-input{cursor:pointer;}
 
+/* Log action modal - rating section */
+.rating-section{margin-bottom:16px;}
+.rating-section-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:block;}
+.rating-options{display:flex;gap:8px;flex-wrap:wrap;}
+.rating-option{padding:8px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid transparent;transition:all .15s;display:flex;align-items:center;gap:6px;}
+.rating-option:hover{transform:translateY(-1px);}
+.rating-option.r-excellent{background:rgba(16,185,129,.1);color:var(--r-excellent);border-color:rgba(16,185,129,.25);}
+.rating-option.r-excellent.sel{background:rgba(16,185,129,.25);border-color:var(--r-excellent);box-shadow:0 0 0 3px rgba(16,185,129,.15);}
+.rating-option.r-good{background:rgba(14,165,233,.1);color:var(--r-good);border-color:rgba(14,165,233,.25);}
+.rating-option.r-good.sel{background:rgba(14,165,233,.25);border-color:var(--r-good);box-shadow:0 0 0 3px rgba(14,165,233,.15);}
+.rating-option.r-neutral{background:rgba(245,158,11,.1);color:var(--r-neutral);border-color:rgba(245,158,11,.25);}
+.rating-option.r-neutral.sel{background:rgba(245,158,11,.25);border-color:var(--r-neutral);box-shadow:0 0 0 3px rgba(245,158,11,.15);}
+.rating-option.r-poor{background:rgba(239,68,68,.1);color:var(--r-poor);border-color:rgba(239,68,68,.25);}
+.rating-option.r-poor.sel{background:rgba(239,68,68,.25);border-color:var(--r-poor);box-shadow:0 0 0 3px rgba(239,68,68,.15);}
+.rating-option.r-noresponse{background:rgba(100,116,139,.1);color:var(--r-noresponse);border-color:rgba(100,116,139,.25);}
+.rating-option.r-noresponse.sel{background:rgba(100,116,139,.25);border-color:var(--r-noresponse);box-shadow:0 0 0 3px rgba(100,116,139,.15);}
+
 /* Toast */
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface);border:1px solid var(--accent3);border-radius:12px;padding:10px 18px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--accent3);opacity:0;transition:all .3s;z-index:400;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.4);}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* Pages */
 .page{display:none;}
 .page.active{display:block;}
 .empty-state{text-align:center;padding:40px 20px;color:var(--muted);}
 .empty-state .icon{font-size:36px;margin-bottom:12px;}
 .empty-state p{font-size:13px;}
 
-/* Scrollbar */
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:99px;}
 
-/* Animations */
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 .content{animation:fadeIn .25s ease;}
-@keyframes wa-pulse{0%,100%{box-shadow:0 0 0 0 rgba(37,211,102,.4)}50%{box-shadow:0 0 0 6px rgba(37,211,102,0)}}
-.wa-pulse{animation:wa-pulse 2s infinite;}
 
-/* ═══════════════════════════════════════
-   RESPONSIVE BREAKPOINTS
-═══════════════════════════════════════ */
-
-/* Tablet (≤900px) */
+/* ─── RESPONSIVE ─── */
 @media(max-width:900px){
   .two-col{grid-template-columns:1fr;}
   .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .channel-summary{grid-template-columns:repeat(2,1fr);}
   .comms-grid{grid-template-columns:1fr;}
   .search-box{display:none;}
-  .task-columns{grid-template-columns:1fr;overflow-x:auto;}
   .task-columns{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;}
   .task-col{min-width:260px;flex-shrink:0;}
+  .emp-grid{grid-template-columns:1fr 1fr;}
+  .three-col{grid-template-columns:1fr 1fr;}
 }
-
-/* Mobile (≤640px) */
 @media(max-width:640px){
   :root{--topbar-h:52px;}
-
-  /* Hide desktop sidebar, show hamburger */
   .sidebar{transform:translateX(-100%);}
   .sidebar.open{transform:translateX(0);}
   .hamburger{display:flex;}
   .main{margin-left:0;}
-
-  /* Show bottom nav */
   .bottom-nav{display:grid;}
   .content{padding:14px 14px calc(var(--bottom-nav-h) + 14px);}
-
-  /* Topbar */
   .topbar{padding:0 14px;gap:10px;}
   .topbar-title{font-size:16px;}
-
-  /* Stats: 2 col */
   .stats-grid{grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
   .stat-value{font-size:24px;}
-  .stat-label{font-size:9px;}
-
-  /* Kanban: horizontal scroll */
-  .task-columns{padding:12px;}
-
-  /* Clients table: scrollable */
-  .table-wrap{overflow-x:auto;}
-  table{min-width:580px;}
-  .action-btns{flex-direction:column;gap:4px;}
-  .icon-btn{width:100%;justify-content:center;}
-
-  /* Comms: show list OR panel, not both */
+  .channel-summary{grid-template-columns:repeat(2,1fr);}
+  .emp-grid{grid-template-columns:1fr;}
+  .three-col{grid-template-columns:1fr;}
   .comms-grid{display:block;height:auto;}
   .comms-list{border-radius:14px;margin-bottom:0;height:auto;}
   .comms-list.hidden{display:none;}
   .comms-panel{border-radius:14px;margin-top:12px;min-height:400px;}
   .comms-panel.hidden{display:none;}
   .comms-back{display:flex;}
-  .comms-panel-header{flex-direction:column;align-items:flex-start;}
-  .comms-panel-btns{width:100%;justify-content:stretch;}
-  .comms-panel-btns .icon-btn{flex:1;justify-content:center;}
-
-  /* Modal: bottom sheet */
+  .table-wrap{overflow-x:auto;}
+  table{min-width:580px;}
+  .auto-log-table{min-width:700px;}
+  .rating-wrap{flex-direction:column;align-items:flex-start;}
   .modal{border-radius:20px 20px 0 0;}
   .form-row{grid-template-columns:1fr;}
-
-  /* Project items */
-  .project-item{flex-wrap:wrap;gap:8px;}
-  .project-progress-wrap{width:100%;}
-  .progress-bar{flex:1;}
-
-  /* Section header */
-  .section-header{padding:12px 14px;}
-  .tabs{display:none;}
-
-  /* Page headings */
   .page-head{flex-direction:column;align-items:flex-start !important;gap:10px;}
   .page-head .btn{width:100%;}
+  .filter-bar{gap:6px;}
+  .cr-list-panel{display:none!important;}
+  .cr-record-panel{grid-column:1/-1;}
+  .cr-tabs-bar{overflow-x:auto;}
+  .cr-form-grid-3{grid-template-columns:1fr 1fr!important;}
+  .cr-form-grid-4{grid-template-columns:1fr 1fr!important;}
 }
 
-@media(max-width:380px){
-  .stats-grid{grid-template-columns:1fr 1fr;}
-  .stat-value{font-size:22px;}
+/* ═══════════════════════════════════════
+   COMPANY RECORDS MODULE
+═══════════════════════════════════════ */
+
+/* Company list page layout */
+.cr-layout{display:grid;grid-template-columns:300px 1fr;gap:0;height:calc(100vh - var(--topbar-h) - 40px);min-height:600px;}
+.cr-list-panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;}
+.cr-list-header{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:8px;}
+.cr-list-title{font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:space-between;}
+.cr-search{display:flex;align-items:center;gap:7px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:6px 10px;}
+.cr-search input{background:none;border:none;outline:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;width:100%;}
+.cr-search input::placeholder{color:var(--muted);}
+.cr-filter-row{display:flex;gap:6px;flex-wrap:wrap;}
+.cr-filter-chip{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;cursor:pointer;border:1px solid var(--border);color:var(--muted);background:var(--surface2);transition:all .12s;}
+.cr-filter-chip:hover,.cr-filter-chip.active{background:rgba(14,165,233,.15);color:var(--accent);border-color:rgba(14,165,233,.3);}
+.cr-list-body{overflow-y:auto;flex:1;}
+.cr-company-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s;position:relative;}
+.cr-company-row:hover{background:var(--surface2);}
+.cr-company-row.active{background:rgba(14,165,233,.07);border-left:2px solid var(--accent);}
+.cr-co-avatar{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;letter-spacing:-.5px;}
+.cr-co-name{font-size:13px;font-weight:600;line-height:1.3;}
+.cr-co-meta{font-size:10px;color:var(--muted);margin-top:2px;}
+.cr-co-status{margin-left:auto;flex-shrink:0;}
+.cr-status-dot{width:7px;height:7px;border-radius:50%;}
+
+/* Record panel */
+.cr-record-panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;margin-left:12px;}
+.cr-record-header{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);border-bottom:1px solid var(--border);padding:16px 20px;display:flex;align-items:flex-start;gap:14px;position:relative;overflow:hidden;}
+.cr-record-header::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(14,165,233,.06);pointer-events:none;}
+.cr-record-header::after{content:'';position:absolute;bottom:-50px;right:60px;width:120px;height:120px;border-radius:50%;background:rgba(99,102,241,.05);pointer-events:none;}
+.cr-header-avatar{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0;position:relative;z-index:1;}
+.cr-header-info{flex:1;min-width:0;position:relative;z-index:1;}
+.cr-header-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;line-height:1.2;}
+.cr-header-brand{font-size:12px;color:var(--muted2);margin-top:3px;}
+.cr-header-pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.cr-header-actions{display:flex;gap:7px;flex-shrink:0;position:relative;z-index:1;flex-wrap:wrap;}
+.cr-active-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;background:rgba(16,185,129,.15);color:var(--accent3);border:1px solid rgba(16,185,129,.25);}
+.cr-active-badge.inactive{background:rgba(239,68,68,.1);color:#f87171;border-color:rgba(239,68,68,.2);}
+.cr-active-badge.hold{background:rgba(245,158,11,.1);color:var(--accent2);border-color:rgba(245,158,11,.2);}
+
+/* Tabs */
+.cr-tabs-bar{display:flex;gap:1px;background:var(--surface2);border-bottom:1px solid var(--border);padding:4px 16px 0;overflow-x:auto;}
+.cr-tab{padding:8px 14px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;margin-bottom:-1px;}
+.cr-tab:hover{color:var(--muted2);}
+.cr-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.cr-tab-content{display:none;overflow-y:auto;flex:1;padding:16px 20px;}
+.cr-tab-content.active{display:block;}
+
+/* Form layout */
+.cr-section{margin-bottom:22px;}
+.cr-section-label{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.cr-section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.cr-form-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.cr-form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.cr-form-grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;}
+.cr-field{display:flex;flex-direction:column;gap:4px;}
+.cr-field label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+.cr-input{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:8px 10px;font-size:13px;color:var(--text);font-family:'DM Sans',sans-serif;outline:none;transition:border .15s;width:100%;}
+.cr-input:focus{border-color:var(--accent);}
+.cr-input.readonly{opacity:.6;cursor:default;}
+select.cr-input{cursor:pointer;}
+textarea.cr-input{resize:vertical;min-height:72px;}
+.cr-input-group{display:flex;gap:6px;align-items:center;}
+.cr-input-group .cr-input{flex:1;}
+
+/* Status select colors */
+.status-active{color:var(--accent3);}
+.status-notinterested{color:var(--danger);}
+.status-futurelead{color:var(--accent2);}
+.status-disqualified{color:var(--muted);}
+.status-captureing{color:var(--accent);}
+
+/* Products panel */
+.cr-products-wrap{display:grid;grid-template-columns:1fr 220px;gap:12px;}
+.cr-product-list{background:var(--surface2);border:1px solid var(--border);border-radius:8px;overflow:hidden;max-height:260px;overflow-y:auto;}
+.cr-product-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid var(--border);font-size:12px;}
+.cr-product-item:last-child{border-bottom:none;}
+.cr-product-item input[type=checkbox]{accent-color:var(--accent);width:14px;height:14px;cursor:pointer;}
+.cr-product-name{flex:1;}
+.cr-product-remove{color:var(--muted);cursor:pointer;font-size:14px;transition:color .12s;}
+.cr-product-remove:hover{color:var(--danger);}
+.cr-product-add-box{display:flex;flex-direction:column;gap:8px;}
+.cr-product-search{display:flex;flex-direction:column;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px;}
+.cr-product-suggestions{max-height:150px;overflow-y:auto;display:flex;flex-direction:column;gap:3px;margin-top:4px;}
+.cr-product-suggestion{padding:6px 8px;border-radius:6px;font-size:12px;cursor:pointer;transition:background .12s;}
+.cr-product-suggestion:hover{background:rgba(14,165,233,.12);color:var(--accent);}
+
+/* Contact persons */
+.cr-cp-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.cr-cp-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;position:relative;}
+.cr-cp-name{font-size:13px;font-weight:700;margin-bottom:4px;}
+.cr-cp-detail{font-size:12px;color:var(--muted2);}
+.cr-cp-remove{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:6px;background:rgba(239,68,68,.1);color:#f87171;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:background .12s;}
+.cr-cp-remove:hover{background:rgba(239,68,68,.25);}
+.cr-add-cp-form{background:var(--surface2);border:1px solid rgba(14,165,233,.2);border-radius:10px;padding:14px;}
+.cr-add-cp-title{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+
+/* Demo timeline */
+.cr-demo-timeline{display:flex;align-items:center;gap:0;margin:12px 0;}
+.cr-demo-step{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
+.cr-demo-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;border:2px solid var(--border);background:var(--surface2);transition:all .2s;}
+.cr-demo-dot.filled{background:var(--accent);border-color:var(--accent);color:#fff;}
+.cr-demo-dot.done{background:var(--accent3);border-color:var(--accent3);color:#fff;}
+.cr-demo-line{flex:1;height:2px;background:var(--border);margin:0 -2px;margin-top:-24px;z-index:-1;}
+.cr-demo-line.filled{background:var(--accent);}
+.cr-demo-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-align:center;}
+.cr-demo-date{font-size:10px;color:var(--muted2);}
+
+/* Activity log in record */
+.cr-activity-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+.cr-activity-item:last-child{border-bottom:none;}
+.cr-activity-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;background:var(--surface2);}
+.cr-activity-text{font-size:12.5px;color:var(--muted2);line-height:1.5;}
+.cr-activity-text strong{color:var(--text);}
+.cr-activity-time{font-size:11px;color:var(--muted);}
+
+/* Score ring */
+.cr-score-ring{display:flex;align-items:center;gap:12px;padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;margin-bottom:14px;}
+.cr-ring-svg{flex-shrink:0;}
+.cr-ring-info .val{font-family:'Fraunces',serif;font-size:26px;font-weight:700;}
+.cr-ring-info .lbl{font-size:11px;color:var(--muted);}
+.cr-quick-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.cr-quick-stat{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;text-align:center;}
+.cr-quick-stat .val{font-family:'Fraunces',serif;font-size:18px;font-weight:700;}
+.cr-quick-stat .lbl{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;margin-top:2px;}
+
+/* Save bar */
+.cr-save-bar{padding:12px 20px;border-top:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0;}
+.cr-save-bar .unsaved{font-size:12px;color:var(--accent2);display:none;}
+.cr-save-bar .unsaved.show{display:block;}
+.cr-id-badge{font-size:11px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);padding:4px 10px;border-radius:6px;}
+
+/* Empty state in record panel */
+.cr-empty-record{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:40px;color:var(--muted);text-align:center;}
+.cr-empty-record .icon{font-size:48px;margin-bottom:14px;opacity:.4;}
+.cr-empty-record p{font-size:13px;line-height:1.6;max-width:220px;}
+
+/* Status pill variants for list */
+.cr-pill{font-size:9px;font-weight:800;padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em;}
+.cr-pill.active{background:rgba(16,185,129,.15);color:var(--accent3);}
+.cr-pill.notint{background:rgba(239,68,68,.12);color:#f87171;}
+.cr-pill.future{background:rgba(245,158,11,.12);color:var(--accent2);}
+.cr-pill.disq{background:rgba(100,116,139,.12);color:var(--muted2);}
+.cr-pill.capture{background:rgba(14,165,233,.12);color:var(--accent);}
+.cr-pill.closedeal{background:rgba(16,185,129,.2);color:#34d399;}
+.cr-pill.demo{background:rgba(139,92,246,.15);color:#a78bfa;}
+
+/* M/S/M/L classification selector */
+.cr-size-sel{display:flex;gap:6px;}
+.cr-size-btn{padding:5px 11px;border-radius:7px;font-size:11px;font-weight:800;cursor:pointer;border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);transition:all .12s;}
+.cr-size-btn:hover{border-color:var(--accent);color:var(--accent);}
+.cr-size-btn.sel{background:rgba(14,165,233,.15);border-color:var(--accent);color:var(--accent);}
+
+/* Notes area */
+.cr-notes-area{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--text);font-family:'DM Sans',sans-serif;outline:none;width:100%;resize:vertical;min-height:80px;line-height:1.5;}
+.cr-notes-area:focus{border-color:var(--accent);}
+
+@media(max-width:900px){
+  .cr-layout{grid-template-columns:240px 1fr;}
+  .cr-form-grid-4{grid-template-columns:1fr 1fr;}
 }
 </style>
 </head>
 <body>
 <div class="app">
 
-<!-- ─── SIDEBAR OVERLAY ─── -->
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
-<!-- ─── SIDEBAR ─── -->
+<!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
     <div class="logo-mark">
@@ -392,11 +651,13 @@ select.form-input{cursor:pointer;}
     <div class="nav-item" onclick="showPage('clients',this)"><span class="icon">🏢</span> Clients</div>
     <div class="nav-label" style="margin-top:12px">Communications</div>
     <div class="nav-item" onclick="showPage('comms',this)"><span class="icon">💬</span> WhatsApp & Calls <span class="nav-badge wa">3</span></div>
+    <div class="nav-label" style="margin-top:12px">Performance</div>
+    <div class="nav-item" onclick="showPage('performance',this)"><span class="icon">🏆</span> Team Performance <span class="nav-badge purple">New</span></div>
+    <div class="nav-item" onclick="showPage('automation',this)"><span class="icon">⚡</span> Outreach Log</div>
     <div class="nav-label" style="margin-top:12px">Export Operations</div>
+    <div class="nav-item" onclick="showPage('companyrecords',this)"><span class="icon">🏭</span> Company Records <span class="nav-badge" style="background:#8b5cf6">537</span></div>
     <div class="nav-item" onclick="showPage('markets',this)"><span class="icon">🗺️</span> Market Campaigns</div>
     <div class="nav-item" onclick="showPage('reports',this)"><span class="icon">📈</span> Reports</div>
-    <div class="nav-item" onclick="showPage('team',this)"><span class="icon">👥</span> Team</div>
-    <div class="nav-label" style="margin-top:12px">Settings</div>
     <div class="nav-item" onclick="showPage('settings',this)"><span class="icon">⚙️</span> Settings</div>
   </nav>
   <div class="sidebar-user">
@@ -405,7 +666,6 @@ select.form-input{cursor:pointer;}
   </div>
 </aside>
 
-<!-- ─── MAIN ─── -->
 <div class="main">
 
   <!-- TOPBAR -->
@@ -427,7 +687,6 @@ select.form-input{cursor:pointer;}
         <div class="stat-card green"><div class="stat-label">Active Clients</div><div class="stat-value green">12</div><div class="stat-sub"><span class="up">↑ 1</span> new</div></div>
         <div class="stat-card wagreen"><div class="stat-label">WA Sent</div><div class="stat-value wagreen">37</div><div class="stat-sub">this week</div></div>
       </div>
-
       <div class="section-card">
         <div class="section-header">
           <div class="section-title">🗂️ Task Board</div>
@@ -454,7 +713,6 @@ select.form-input{cursor:pointer;}
           </div>
         </div>
       </div>
-
       <div class="two-col">
         <div class="section-card">
           <div class="section-header"><div class="section-title">📁 Active Projects</div><button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="showPage('projects',null)">View All</button></div>
@@ -496,56 +754,11 @@ select.form-input{cursor:pointer;}
           <table>
             <thead><tr><th>Client</th><th>Sector</th><th>Markets</th><th>Status</th><th>Contact</th><th>Actions</th></tr></thead>
             <tbody>
-              <tr>
-                <td><div class="client-name">Mehta Ceramics</div><div class="client-company">Ahmedabad, GJ</div></td>
-                <td>Ceramics</td><td>UAE, Saudi Arabia</td>
-                <td><span class="pill onboard-pill"><span class="pill-dot"></span>Onboarding</span></td>
-                <td style="color:var(--muted);font-size:12px">+91 98765 43210</td>
-                <td><div class="action-btns">
-                  <a class="icon-btn wa wa-pulse" href="https://wa.me/919876543210?text=Hello%20Mehta%20Ceramics%2C%20this%20is%20Export%20Support%20India.%20Following%20up%20on%20your%20onboarding." target="_blank" onclick="showToast('📲 Opening WhatsApp...')">💬 WhatsApp</a>
-                  <a class="icon-btn call" href="tel:+919876543210" onclick="showToast('📞 Calling...')">📞 Call</a>
-                </div></td>
-              </tr>
-              <tr>
-                <td><div class="client-name">Sunrise Pharma</div><div class="client-company">Mumbai, MH</div></td>
-                <td>Pharma</td><td>S.Africa, Kenya</td>
-                <td><span class="pill hold-pill"><span class="pill-dot"></span>On Hold</span></td>
-                <td style="color:var(--muted);font-size:12px">+91 91234 56789</td>
-                <td><div class="action-btns">
-                  <a class="icon-btn wa" href="https://wa.me/919123456789?text=Hello%20Sunrise%20Pharma%2C%20this%20is%20Export%20Support%20India.%20We%20wanted%20to%20discuss%20resuming%20your%20campaign." target="_blank" onclick="showToast('📲 Opening WhatsApp...')">💬 WhatsApp</a>
-                  <a class="icon-btn call" href="tel:+919123456789" onclick="showToast('📞 Calling...')">📞 Call</a>
-                </div></td>
-              </tr>
-              <tr>
-                <td><div class="client-name">AgroFresh Exports</div><div class="client-company">Pune, MH</div></td>
-                <td>Agriculture</td><td>USA, Canada, UK</td>
-                <td><span class="pill active-pill"><span class="pill-dot"></span>Active</span></td>
-                <td style="color:var(--muted);font-size:12px">+91 87654 32109</td>
-                <td><div class="action-btns">
-                  <a class="icon-btn wa" href="https://wa.me/918765432109?text=Hello%20AgroFresh%2C%20this%20is%20Export%20Support%20India.%20Here%20is%20your%20campaign%20update." target="_blank" onclick="showToast('📲 Opening WhatsApp...')">💬 WhatsApp</a>
-                  <a class="icon-btn call" href="tel:+918765432109" onclick="showToast('📞 Calling...')">📞 Call</a>
-                </div></td>
-              </tr>
-              <tr>
-                <td><div class="client-name">Radha Textiles</div><div class="client-company">Surat, GJ</div></td>
-                <td>Textiles</td><td>Germany, Netherlands</td>
-                <td><span class="pill active-pill"><span class="pill-dot"></span>Active</span></td>
-                <td style="color:var(--muted);font-size:12px">+91 99887 76655</td>
-                <td><div class="action-btns">
-                  <a class="icon-btn wa" href="https://wa.me/919988776655?text=Hello%20Radha%20Textiles%2C%20this%20is%20Export%20Support%20India.%20Your%20Euro%20campaign%20update%20is%20ready." target="_blank" onclick="showToast('📲 Opening WhatsApp...')">💬 WhatsApp</a>
-                  <a class="icon-btn call" href="tel:+919988776655" onclick="showToast('📞 Calling...')">📞 Call</a>
-                </div></td>
-              </tr>
-              <tr>
-                <td><div class="client-name">Keystone Infra Co.</div><div class="client-company">Delhi, DL</div></td>
-                <td>Infrastructure</td><td>Qatar, Oman</td>
-                <td><span class="pill active-pill"><span class="pill-dot"></span>Active</span></td>
-                <td style="color:var(--muted);font-size:12px">+91 98110 00123</td>
-                <td><div class="action-btns">
-                  <a class="icon-btn wa" href="https://wa.me/919811000123?text=Hello%20Keystone%20Infra%2C%20this%20is%20Export%20Support%20India.%20Your%20SIMEC%20report%20is%20ready%20for%20review." target="_blank" onclick="showToast('📲 Opening WhatsApp...')">💬 WhatsApp</a>
-                  <a class="icon-btn call" href="tel:+919811000123" onclick="showToast('📞 Calling...')">📞 Call</a>
-                </div></td>
-              </tr>
+              <tr><td><div class="client-name">Mehta Ceramics</div><div class="client-company">Ahmedabad, GJ</div></td><td>Ceramics</td><td>UAE, Saudi Arabia</td><td><span class="pill onboard-pill"><span class="pill-dot"></span>Onboarding</span></td><td style="color:var(--muted);font-size:12px">+91 98765 43210</td><td><div class="action-btns"><a class="icon-btn wa wa-pulse" href="https://wa.me/919876543210?text=Hello%20Mehta%20Ceramics%2C%20this%20is%20Export%20Support%20India." target="_blank" onclick="showToast('📲 Opening WhatsApp...')">💬 WA</a><a class="icon-btn call" href="tel:+919876543210" onclick="showToast('📞 Calling...')">📞 Call</a><span class="icon-btn li" onclick="showToast('💼 Opening LinkedIn...')">💼 LI</span><span class="icon-btn email" onclick="openLogModal('Mehta Ceramics','email')">✉️ Email</span></div></td></tr>
+              <tr><td><div class="client-name">Sunrise Pharma</div><div class="client-company">Mumbai, MH</div></td><td>Pharma</td><td>S.Africa, Kenya</td><td><span class="pill hold-pill"><span class="pill-dot"></span>On Hold</span></td><td style="color:var(--muted);font-size:12px">+91 91234 56789</td><td><div class="action-btns"><a class="icon-btn wa" href="https://wa.me/919123456789?text=Hello%20Sunrise%20Pharma" target="_blank" onclick="showToast('📲 Opening WhatsApp...')">💬 WA</a><a class="icon-btn call" href="tel:+919123456789" onclick="showToast('📞 Calling...')">📞 Call</a><span class="icon-btn li" onclick="showToast('💼 Opening LinkedIn...')">💼 LI</span><span class="icon-btn email" onclick="openLogModal('Sunrise Pharma','email')">✉️ Email</span></div></td></tr>
+              <tr><td><div class="client-name">AgroFresh Exports</div><div class="client-company">Pune, MH</div></td><td>Agriculture</td><td>USA, Canada, UK</td><td><span class="pill active-pill"><span class="pill-dot"></span>Active</span></td><td style="color:var(--muted);font-size:12px">+91 87654 32109</td><td><div class="action-btns"><a class="icon-btn wa" href="https://wa.me/918765432109?text=Hello%20AgroFresh" target="_blank" onclick="showToast('📲 Opening WhatsApp...')">💬 WA</a><a class="icon-btn call" href="tel:+918765432109" onclick="showToast('📞 Calling...')">📞 Call</a><span class="icon-btn li" onclick="showToast('💼 Opening LinkedIn...')">💼 LI</span><span class="icon-btn email" onclick="openLogModal('AgroFresh Exports','email')">✉️ Email</span></div></td></tr>
+              <tr><td><div class="client-name">Radha Textiles</div><div class="client-company">Surat, GJ</div></td><td>Textiles</td><td>Germany, Netherlands</td><td><span class="pill active-pill"><span class="pill-dot"></span>Active</span></td><td style="color:var(--muted);font-size:12px">+91 99887 76655</td><td><div class="action-btns"><a class="icon-btn wa" href="https://wa.me/919988776655?text=Hello%20Radha%20Textiles" target="_blank" onclick="showToast('📲 Opening WhatsApp...')">💬 WA</a><a class="icon-btn call" href="tel:+919988776655" onclick="showToast('📞 Calling...')">📞 Call</a><span class="icon-btn li" onclick="showToast('💼 Opening LinkedIn...')">💼 LI</span><span class="icon-btn email" onclick="openLogModal('Radha Textiles','email')">✉️ Email</span></div></td></tr>
+              <tr><td><div class="client-name">Keystone Infra Co.</div><div class="client-company">Delhi, DL</div></td><td>Infrastructure</td><td>Qatar, Oman</td><td><span class="pill active-pill"><span class="pill-dot"></span>Active</span></td><td style="color:var(--muted);font-size:12px">+91 98110 00123</td><td><div class="action-btns"><a class="icon-btn wa" href="https://wa.me/919811000123?text=Hello%20Keystone" target="_blank" onclick="showToast('📲 Opening WhatsApp...')">💬 WA</a><a class="icon-btn call" href="tel:+919811000123" onclick="showToast('📞 Calling...')">📞 Call</a><span class="icon-btn li" onclick="showToast('💼 Opening LinkedIn...')">💼 LI</span><span class="icon-btn email" onclick="openLogModal('Keystone Infra Co.','email')">✉️ Email</span></div></td></tr>
             </tbody>
           </table>
         </div>
@@ -570,7 +783,7 @@ select.form-input{cursor:pointer;}
             <div class="comms-client-item active" onclick="selectClient('mehta',this)"><div class="comms-avatar" style="background:linear-gradient(135deg,#0ea5e9,#6366f1)">MC</div><div style="flex:1;min-width:0"><div class="comms-name">Mehta Ceramics</div><div class="comms-last">Following up on onboarding...</div></div><div class="comms-unread">2</div></div>
             <div class="comms-client-item" onclick="selectClient('agro',this)"><div class="comms-avatar" style="background:linear-gradient(135deg,#10b981,#059669)">AF</div><div style="flex:1;min-width:0"><div class="comms-name">AgroFresh Exports</div><div class="comms-last">USA buyer list shared ✓</div></div><div class="comms-unread">1</div></div>
             <div class="comms-client-item" onclick="selectClient('radha',this)"><div class="comms-avatar" style="background:linear-gradient(135deg,#f59e0b,#d97706)">RT</div><div style="flex:1;min-width:0"><div class="comms-name">Radha Textiles</div><div class="comms-last">Called · 12 min · Feb 26</div></div></div>
-            <div class="comms-client-item" onclick="selectClient('keystone',this)"><div class="comms-avatar" style="background:linear-gradient(135deg,#8b5cf6,#6366f1)">KI</div><div style="flex:1;min-width:0"><div class="comms-name">Keystone Infra Co.</div><div class="comms-last">SIMEC report ready for review</div></div></div>
+            <div class="comms-client-item" onclick="selectClient('keystone',this)"><div class="comms-avatar" style="background:linear-gradient(135deg,#8b5cf6,#6366f1)">KI</div><div style="flex:1;min-width:0"><div class="comms-name">Keystone Infra Co.</div><div class="comms-last">SIMEC report ready</div></div></div>
             <div class="comms-client-item" onclick="selectClient('sunrise',this)"><div class="comms-avatar" style="background:linear-gradient(135deg,#ef4444,#dc2626)">SP</div><div style="flex:1;min-width:0"><div class="comms-name">Sunrise Pharma</div><div class="comms-last">On hold — awaiting response</div></div></div>
           </div>
         </div>
@@ -584,6 +797,8 @@ select.form-input{cursor:pointer;}
             <div class="comms-panel-btns">
               <a class="icon-btn wa" id="panel-wa-btn" href="#" target="_blank" onclick="showToast('📲 Opening WhatsApp...')">💬 WhatsApp</a>
               <a class="icon-btn call" id="panel-call-btn" href="#" onclick="showToast('📞 Calling...')">📞 Call</a>
+              <span class="icon-btn li" onclick="showToast('💼 Opening LinkedIn...')">💼 LinkedIn</span>
+              <span class="icon-btn email" id="panel-email-btn" onclick="showToast('✉️ Opening Email...')">✉️ Email</span>
             </div>
           </div>
           <div class="log-list" id="log-list"></div>
@@ -641,39 +856,173 @@ select.form-input{cursor:pointer;}
       </div>
     </div>
 
+    <!-- ══════════ PERFORMANCE PAGE ══════════ -->
+    <div class="page" id="page-performance">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;" class="page-head">
+        <div><div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600">Team Performance</div><div style="font-size:13px;color:var(--muted);margin-top:2px">Outreach activity & client satisfaction by employee</div></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <select class="filter-select" id="perf-period" onchange="renderPerformancePage()">
+            <option value="week">This Week</option>
+            <option value="month" selected>This Month</option>
+            <option value="quarter">This Quarter</option>
+          </select>
+          <button class="btn btn-primary" onclick="openLogModal(null,null)">+ Log Outreach</button>
+        </div>
+      </div>
+
+      <!-- Channel Summary Mini Cards -->
+      <div class="channel-summary" id="channel-summary-cards"></div>
+
+      <!-- Employee Cards -->
+      <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;">Team Members</div>
+      <div class="emp-grid" id="emp-grid"></div>
+
+      <!-- Leaderboard + Channel breakdown -->
+      <div class="two-col">
+        <div class="section-card">
+          <div class="section-header"><div class="section-title">📊 Channel Performance</div></div>
+          <div style="padding:16px" id="channel-perf-bars"></div>
+        </div>
+        <div class="section-card">
+          <div class="section-header"><div class="section-title">🏆 Leaderboard</div></div>
+          <div class="leaderboard-list" id="leaderboard-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ OUTREACH LOG PAGE ══════════ -->
+    <div class="page" id="page-automation">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;" class="page-head">
+        <div><div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600">Outreach Log</div><div style="font-size:13px;color:var(--muted);margin-top:2px">All client touchpoints — calls, WhatsApp, LinkedIn, email</div></div>
+        <button class="btn btn-primary" onclick="openLogModal(null,null)">+ Log Outreach</button>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <span class="filter-label">Filter:</span>
+        <select class="filter-select" id="log-filter-emp" onchange="renderOutreachLog()">
+          <option value="">All Employees</option>
+          <option>Rajan S.</option>
+          <option>Priya K.</option>
+          <option>Amit M.</option>
+          <option>Meera V.</option>
+        </select>
+        <select class="filter-select" id="log-filter-ch" onchange="renderOutreachLog()">
+          <option value="">All Channels</option>
+          <option value="call">📞 Call</option>
+          <option value="wa">💬 WhatsApp</option>
+          <option value="li">💼 LinkedIn</option>
+          <option value="email">✉️ Email</option>
+        </select>
+        <select class="filter-select" id="log-filter-rating" onchange="renderOutreachLog()">
+          <option value="">All Ratings</option>
+          <option value="Excellent 🌟">Excellent</option>
+          <option value="Satisfied 👍">Satisfied</option>
+          <option value="Neutral 😐">Neutral</option>
+          <option value="Not Satisfied 👎">Not Satisfied</option>
+          <option value="No Response 🔇">No Response</option>
+        </select>
+        <select class="filter-select" id="log-filter-client" onchange="renderOutreachLog()">
+          <option value="">All Clients</option>
+          <option>Mehta Ceramics</option>
+          <option>AgroFresh Exports</option>
+          <option>Radha Textiles</option>
+          <option>Keystone Infra Co.</option>
+          <option>Sunrise Pharma</option>
+        </select>
+      </div>
+
+      <div class="section-card">
+        <div class="table-wrap">
+          <table class="auto-log-table" id="outreach-log-table">
+            <thead>
+              <tr>
+                <th>Date & Time</th>
+                <th>Employee</th>
+                <th>Client</th>
+                <th>Channel</th>
+                <th>Notes</th>
+                <th>Satisfaction</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="outreach-log-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ COMPANY RECORDS ══════════ -->
+    <div class="page" id="page-companyrecords">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;" class="page-head">
+        <div>
+          <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600">Company Records</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:2px">Export Support India — CRM</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-ghost" style="font-size:12px" onclick="exportCompanyCSV()">⬇️ Export CSV</button>
+          <button class="btn btn-primary" onclick="addNewCompany()">+ Add Company</button>
+        </div>
+      </div>
+
+      <div class="cr-layout" id="cr-layout">
+        <!-- LIST PANEL -->
+        <div class="cr-list-panel">
+          <div class="cr-list-header">
+            <div class="cr-list-title">
+              <span>Companies <span id="cr-count" style="color:var(--muted);font-weight:400;font-size:11px">(10)</span></span>
+              <div style="display:flex;gap:5px">
+                <span style="font-size:11px;color:var(--muted);cursor:pointer" onclick="sortCompanies('id')">ID ↕</span>
+                <span style="font-size:11px;color:var(--muted);cursor:pointer" onclick="sortCompanies('name')">A-Z ↕</span>
+              </div>
+            </div>
+            <div class="cr-search">
+              <span style="font-size:14px">🔍</span>
+              <input type="text" id="cr-search-input" placeholder="Search company, ID, sector..." oninput="filterCompanies()"/>
+            </div>
+            <div class="cr-filter-row" id="cr-filter-chips">
+              <div class="cr-filter-chip active" data-filter="" onclick="setCRFilter(this,'')">All</div>
+              <div class="cr-filter-chip" data-filter="Active Client" onclick="setCRFilter(this,'Active Client')">Active</div>
+              <div class="cr-filter-chip" data-filter="Close the deal" onclick="setCRFilter(this,'Close the deal')">Close Deal</div>
+              <div class="cr-filter-chip" data-filter="Future Lead" onclick="setCRFilter(this,'Future Lead')">Future Lead</div>
+              <div class="cr-filter-chip" data-filter="Not Interested" onclick="setCRFilter(this,'Not Interested')">Not Int.</div>
+              <div class="cr-filter-chip" data-filter="Disqualified" onclick="setCRFilter(this,'Disqualified')">Disq.</div>
+            </div>
+          </div>
+          <div class="cr-list-body" id="cr-list-body"></div>
+        </div>
+
+        <!-- RECORD PANEL -->
+        <div class="cr-record-panel" id="cr-record-panel">
+          <div class="cr-empty-record" id="cr-empty-state">
+            <div class="icon">🏭</div>
+            <p>Select a company from the list, or click <strong>+ Add Company</strong> to create a new record.</p>
+          </div>
+          <!-- Record content injected by JS -->
+        </div>
+      </div>
+    </div>
+
     <!-- PLACEHOLDER PAGES -->
     <div class="page" id="page-markets"><div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600;margin-bottom:16px">Market Campaigns</div><div class="section-card"><div class="empty-state"><div class="icon">🗺️</div><p>Market campaign details in the full build.</p></div></div></div>
     <div class="page" id="page-reports"><div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600;margin-bottom:16px">Reports</div><div class="section-card"><div class="empty-state"><div class="icon">📈</div><p>Reporting module in the full build.</p></div></div></div>
-    <div class="page" id="page-team"><div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600;margin-bottom:16px">Team</div><div class="section-card"><div class="empty-state"><div class="icon">👥</div><p>Team management in the full build.</p></div></div></div>
     <div class="page" id="page-settings"><div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600;margin-bottom:16px">Settings</div><div class="section-card"><div class="empty-state"><div class="icon">⚙️</div><p>Settings in the full build.</p></div></div></div>
 
   </div><!-- /content -->
 </div><!-- /main -->
 
-<!-- ─── BOTTOM NAV (mobile) ─── -->
+<!-- BOTTOM NAV -->
 <nav class="bottom-nav" id="bottom-nav">
-  <div class="bottom-nav-item active" id="bn-dashboard" onclick="showPage('dashboard',this,'bn-dashboard')">
-    <div class="bn-icon">📊</div><div class="bn-label">Home</div>
-  </div>
-  <div class="bottom-nav-item" id="bn-tasks" onclick="showPage('tasks',this,'bn-tasks')">
-    <div class="bn-icon">✅</div><div class="bn-label">Tasks</div>
-    <div class="bottom-nav-badge amber-bg">5</div>
-  </div>
-  <div class="bottom-nav-item" id="bn-clients" onclick="showPage('clients',this,'bn-clients')">
-    <div class="bn-icon">🏢</div><div class="bn-label">Clients</div>
-  </div>
-  <div class="bottom-nav-item" id="bn-comms" onclick="showPage('comms',this,'bn-comms')">
-    <div class="bn-icon">💬</div><div class="bn-label">Comms</div>
-    <div class="bottom-nav-badge wa-bg">3</div>
-  </div>
-  <div class="bottom-nav-item" id="bn-projects" onclick="showPage('projects',this,'bn-projects')">
-    <div class="bn-icon">📁</div><div class="bn-label">Projects</div>
-  </div>
+  <div class="bottom-nav-item active" id="bn-dashboard" onclick="showPage('dashboard',this,'bn-dashboard')"><div class="bn-icon">📊</div><div class="bn-label">Home</div></div>
+  <div class="bottom-nav-item" id="bn-tasks" onclick="showPage('tasks',this,'bn-tasks')"><div class="bn-icon">✅</div><div class="bn-label">Tasks</div><div class="bottom-nav-badge amber-bg">5</div></div>
+  <div class="bottom-nav-item" id="bn-clients" onclick="showPage('clients',this,'bn-clients')"><div class="bn-icon">🏢</div><div class="bn-label">Clients</div></div>
+  <div class="bottom-nav-item" id="bn-performance" onclick="showPage('performance',this,'bn-performance')"><div class="bn-icon">🏆</div><div class="bn-label">Perf</div></div>
+  <div class="bottom-nav-item" id="bn-automation" onclick="showPage('automation',this,'bn-automation')"><div class="bn-icon">⚡</div><div class="bn-label">Log</div></div>
 </nav>
 
 </div><!-- /app -->
 
-<!-- ─── MODAL ─── -->
+<!-- ─── ADD TASK MODAL ─── -->
 <div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
   <div class="modal">
     <div class="modal-title">New Task <div class="modal-close" onclick="closeModal()">✕</div></div>
@@ -694,21 +1043,469 @@ select.form-input{cursor:pointer;}
   </div>
 </div>
 
+<!-- ─── LOG OUTREACH MODAL ─── -->
+<div class="modal-overlay" id="log-modal-overlay" onclick="handleLogOverlayClick(event)">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-title">Log Outreach <div class="modal-close" onclick="closeLogModal()">✕</div></div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Employee</label>
+        <select class="form-input" id="log-employee">
+          <option>Rajan S.</option>
+          <option>Priya K.</option>
+          <option>Amit M.</option>
+          <option>Meera V.</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Client</label>
+        <select class="form-input" id="log-client">
+          <option>Mehta Ceramics</option>
+          <option>AgroFresh Exports</option>
+          <option>Radha Textiles</option>
+          <option>Keystone Infra Co.</option>
+          <option>Sunrise Pharma</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Channel</label>
+        <select class="form-input" id="log-channel">
+          <option value="call">📞 Phone Call</option>
+          <option value="wa">💬 WhatsApp</option>
+          <option value="li">💼 LinkedIn</option>
+          <option value="email">✉️ Email</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Date & Time</label>
+        <input class="form-input" type="datetime-local" id="log-datetime"/>
+      </div>
+    </div>
+
+    <div class="form-group" id="log-duration-group">
+      <label class="form-label">Duration (calls only)</label>
+      <input class="form-input" type="text" placeholder="e.g. 12 min" id="log-duration"/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Notes</label>
+      <textarea class="form-input" rows="3" placeholder="What was discussed? Any follow-up needed?" id="log-notes" style="resize:vertical"></textarea>
+    </div>
+
+    <!-- SATISFACTION RATING -->
+    <div class="rating-section">
+      <span class="rating-section-label">Client Satisfaction / Outcome</span>
+      <div class="rating-options" id="rating-options">
+        <div class="rating-option r-excellent" data-val="Excellent 🌟" onclick="selectRating(this)">🌟 Excellent</div>
+        <div class="rating-option r-good" data-val="Satisfied 👍" onclick="selectRating(this)">👍 Satisfied</div>
+        <div class="rating-option r-neutral" data-val="Neutral 😐" onclick="selectRating(this)">😐 Neutral</div>
+        <div class="rating-option r-poor" data-val="Not Satisfied 👎" onclick="selectRating(this)">👎 Not Satisfied</div>
+        <div class="rating-option r-noresponse" data-val="No Response 🔇" onclick="selectRating(this)">🔇 No Response</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
+      <button class="btn btn-ghost" onclick="closeLogModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveLog()">Save Log</button>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast">✅ Done!</div>
 
 <script>
-// ─── CLIENT DATA ───
-const CLIENTS = {
-  mehta:{name:'Mehta Ceramics',sub:'+91 98765 43210 · Ahmedabad',avatar:'MC',avatarBg:'linear-gradient(135deg,#0ea5e9,#6366f1)',phone:'+919876543210',waMsg:'Hello Mehta Ceramics, this is Export Support India. Following up on your onboarding.',logs:[{type:'wa',icon:'💬',note:'Sent onboarding checklist and document requirements.',time:'Today, 10:22 AM',duration:null},{type:'call',icon:'📞',note:'Introductory call with Mr. Mehta. Discussed UAE market entry timeline.',time:'Feb 26, 3:15 PM',duration:'9 min'},{type:'wa',icon:'💬',note:'Shared Export Support India brochure and pricing plans.',time:'Feb 25, 11:00 AM',duration:null}]},
-  agro:{name:'AgroFresh Exports',sub:'+91 87654 32109 · Pune',avatar:'AF',avatarBg:'linear-gradient(135deg,#10b981,#059669)',phone:'+918765432109',waMsg:'Hello AgroFresh, this is Export Support India. Here is your campaign update.',logs:[{type:'wa',icon:'💬',note:'Shared USA buyer list — 34 qualified leads identified.',time:'Today, 9:00 AM',duration:null},{type:'call',icon:'📞',note:'Weekly sync. Reviewed market gaps in Canada.',time:'Feb 25, 4:00 PM',duration:'18 min'},{type:'wa',icon:'💬',note:'Sent monthly performance report PDF.',time:'Feb 20, 12:00 PM',duration:null}]},
-  radha:{name:'Radha Textiles',sub:'+91 99887 76655 · Surat',avatar:'RT',avatarBg:'linear-gradient(135deg,#f59e0b,#d97706)',phone:'+919988776655',waMsg:'Hello Radha Textiles, this is Export Support India. Your Euro campaign update is ready.',logs:[{type:'call',icon:'📞',note:'Discussed German buyer feedback. 3 interested parties confirmed.',time:'Feb 26, 2:00 PM',duration:'12 min'},{type:'wa',icon:'💬',note:'Sent translated product catalogue for German buyers.',time:'Feb 22, 10:30 AM',duration:null}]},
-  keystone:{name:'Keystone Infra Co.',sub:'+91 98110 00123 · Delhi',avatar:'KI',avatarBg:'linear-gradient(135deg,#8b5cf6,#6366f1)',phone:'+919811000123',waMsg:'Hello Keystone Infra, this is Export Support India. Your SIMEC report is ready for review.',logs:[{type:'wa',icon:'💬',note:'SIMEC report for Qatar market sent for review.',time:'Today, 8:45 AM',duration:null},{type:'call',icon:'📞',note:'Strategy call. Finalized Oman entry plan.',time:'Feb 24, 11:00 AM',duration:'24 min'},{type:'wa',icon:'💬',note:'Shared list of 12 infrastructure buyers from Oman.',time:'Feb 18, 3:00 PM',duration:null},{type:'call',icon:'📞',note:'Onboarding call — aligned on SIMEC campaign goals.',time:'Feb 12, 10:00 AM',duration:'35 min'}]},
+// ════════════════════════════════════
+//  DATA STORE
+// ════════════════════════════════════
+const EMPLOYEES = [
+  {id:'rajan', name:'Rajan S.', role:'Sr. Export Consultant', initials:'RS', bg:'linear-gradient(135deg,#0ea5e9,#6366f1)'},
+  {id:'priya', name:'Priya K.', role:'Client Relations', initials:'PK', bg:'linear-gradient(135deg,#10b981,#059669)'},
+  {id:'amit',  name:'Amit M.',  role:'Market Researcher', initials:'AM', bg:'linear-gradient(135deg,#f59e0b,#d97706)'},
+  {id:'meera', name:'Meera V.', role:'Export Analyst', initials:'MV', bg:'linear-gradient(135deg,#8b5cf6,#6366f1)'},
+];
+
+// Outreach log store
+let OUTREACH_LOG = [
+  {id:1, datetime:'2026-02-28T10:22', employee:'Priya K.', client:'Mehta Ceramics', channel:'wa', notes:'Sent onboarding checklist and document requirements.', rating:'Satisfied 👍', duration:''},
+  {id:2, datetime:'2026-02-28T09:00', employee:'Rajan S.', client:'AgroFresh Exports', channel:'wa', notes:'Shared USA buyer list — 34 qualified leads identified.', rating:'Excellent 🌟', duration:''},
+  {id:3, datetime:'2026-02-27T16:00', employee:'Rajan S.', client:'AgroFresh Exports', channel:'call', notes:'Weekly sync. Reviewed market gaps in Canada. Very productive call.', rating:'Excellent 🌟', duration:'18 min'},
+  {id:4, datetime:'2026-02-27T14:00', employee:'Meera V.', client:'Radha Textiles', channel:'call', notes:'Discussed German buyer feedback. 3 interested parties confirmed.', rating:'Satisfied 👍', duration:'12 min'},
+  {id:5, datetime:'2026-02-27T11:00', employee:'Amit M.', client:'Keystone Infra Co.', channel:'li', notes:'Connected with 2 decision-makers at Qatar infrastructure firm.', rating:'Neutral 😐', duration:''},
+  {id:6, datetime:'2026-02-26T15:15', employee:'Rajan S.', client:'Mehta Ceramics', channel:'call', notes:'Introductory call with Mr. Mehta. Discussed UAE market entry timeline.', rating:'Satisfied 👍', duration:'9 min'},
+  {id:7, datetime:'2026-02-26T10:30', employee:'Priya K.', client:'Radha Textiles', channel:'email', notes:'Sent translated product catalogue for German buyers. Awaiting response.', rating:'No Response 🔇', duration:''},
+  {id:8, datetime:'2026-02-25T11:00', employee:'Amit M.', client:'Sunrise Pharma', channel:'li', notes:'Sent connection request and introductory message to pharma buyer.', rating:'No Response 🔇', duration:''},
+  {id:9, datetime:'2026-02-25T09:00', employee:'Rajan S.', client:'AgroFresh Exports', channel:'email', notes:'Sent monthly performance report PDF. Client acknowledged.', rating:'Satisfied 👍', duration:''},
+  {id:10, datetime:'2026-02-24T11:00', employee:'Meera V.', client:'Keystone Infra Co.', channel:'call', notes:'Strategy call. Finalized Oman entry plan. Very detailed session.', rating:'Excellent 🌟', duration:'24 min'},
+  {id:11, datetime:'2026-02-23T09:00', employee:'Priya K.', client:'Sunrise Pharma', channel:'wa', notes:'Sent follow-up regarding campaign hold status.', rating:'Not Satisfied 👎', duration:''},
+  {id:12, datetime:'2026-02-22T14:30', employee:'Amit M.', client:'Keystone Infra Co.', channel:'email', notes:'Shared list of 12 infrastructure buyers from Oman with contact details.', rating:'Satisfied 👍', duration:''},
+  {id:13, datetime:'2026-02-20T14:30', employee:'Rajan S.', client:'Sunrise Pharma', channel:'call', notes:'Discussed reason for hold — regulatory clearance pending.', rating:'Neutral 😐', duration:'8 min'},
+  {id:14, datetime:'2026-02-20T12:00', employee:'Priya K.', client:'AgroFresh Exports', channel:'email', notes:'Sent monthly performance report — detailed breakdown per market.', rating:'Excellent 🌟', duration:''},
+  {id:15, datetime:'2026-02-19T10:00', employee:'Meera V.', client:'Mehta Ceramics', channel:'li', notes:'Sent LinkedIn message to Mr. Mehta with company profile.', rating:'Satisfied 👍', duration:''},
+];
+
+let nextId = 16;
+let selectedRating = '';
+
+// ════════════════════════════════════
+//  UTILITY
+// ════════════════════════════════════
+function getRatingClass(r) {
+  if(r.includes('Excellent')) return 'r-excellent';
+  if(r.includes('Satisfied')) return 'r-good';
+  if(r.includes('Neutral')) return 'r-neutral';
+  if(r.includes('Not Satisfied')) return 'r-poor';
+  return 'r-noresponse';
+}
+function getChannelBadge(ch) {
+  const map = {wa:'💬 WhatsApp',call:'📞 Call',li:'💼 LinkedIn',email:'✉️ Email'};
+  const cls = {wa:'wa-b',call:'call-b',li:'li-b',email:'email-b'};
+  return `<span class="ch-badge ${cls[ch]}">${map[ch]||ch}</span>`;
+}
+function fmtDatetime(dt) {
+  if(!dt) return '';
+  const d = new Date(dt);
+  return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short'}) + ', ' + d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});
+}
+function scoreEmployee(empName) {
+  const logs = OUTREACH_LOG.filter(l=>l.employee===empName);
+  if(!logs.length) return 0;
+  let pts = 0;
+  logs.forEach(l=>{
+    if(l.rating.includes('Excellent')) pts+=5;
+    else if(l.rating.includes('Satisfied')) pts+=4;
+    else if(l.rating.includes('Neutral')) pts+=3;
+    else if(l.rating.includes('Not Satisfied')) pts+=1;
+    else pts+=2; // no response
+  });
+  return Math.round(pts/logs.length*20); // 0-100
+}
+function scoreClass(s){
+  if(s>=80) return 'score-excellent';
+  if(s>=60) return 'score-good';
+  if(s>=40) return 'score-neutral';
+  return 'score-poor';
+}
+function getEmpChannelCounts(empName){
+  const logs = OUTREACH_LOG.filter(l=>l.employee===empName);
+  return {
+    wa: logs.filter(l=>l.channel==='wa').length,
+    call: logs.filter(l=>l.channel==='call').length,
+    li: logs.filter(l=>l.channel==='li').length,
+    email: logs.filter(l=>l.channel==='email').length,
+    total: logs.length
+  };
+}
+function getEmpSatisfiedRate(empName){
+  const logs = OUTREACH_LOG.filter(l=>l.employee===empName);
+  if(!logs.length) return 0;
+  const pos = logs.filter(l=>l.rating.includes('Excellent')||l.rating.includes('Satisfied')).length;
+  return Math.round(pos/logs.length*100);
+}
+
+// ════════════════════════════════════
+//  PERFORMANCE PAGE
+// ════════════════════════════════════
+function renderPerformancePage() {
+  renderChannelSummary();
+  renderEmpCards();
+  renderLeaderboard();
+  renderChannelBars();
+}
+
+function renderChannelSummary() {
+  const total = {wa:0,call:0,li:0,email:0};
+  const pos = {wa:0,call:0,li:0,email:0};
+  OUTREACH_LOG.forEach(l=>{
+    total[l.channel]++;
+    if(l.rating.includes('Excellent')||l.rating.includes('Satisfied')) pos[l.channel]++;
+  });
+  const channels = [
+    {key:'wa', icon:'💬', label:'WhatsApp', vc:'wa-v', mc:'wa-mini'},
+    {key:'call', icon:'📞', label:'Phone Calls', vc:'call-v', mc:'call-mini'},
+    {key:'li', icon:'💼', label:'LinkedIn', vc:'li-v', mc:'li-mini'},
+    {key:'email', icon:'✉️', label:'Email', vc:'email-v', mc:'email-mini'},
+  ];
+  document.getElementById('channel-summary-cards').innerHTML = channels.map(c=>{
+    const rate = total[c.key]?Math.round(pos[c.key]/total[c.key]*100):0;
+    return `<div class="ch-mini ${c.mc}">
+      <div class="ch-mini-icon">${c.icon}</div>
+      <div class="ch-mini-val ${c.vc}">${total[c.key]}</div>
+      <div class="ch-mini-label">${c.label}</div>
+      <div class="ch-mini-rate"><span class="pos">${rate}%</span> satisfied</div>
+    </div>`;
+  }).join('');
+}
+
+function renderEmpCards() {
+  document.getElementById('emp-grid').innerHTML = EMPLOYEES.map(emp=>{
+    const counts = getEmpChannelCounts(emp.name);
+    const score = scoreEmployee(emp.name);
+    const sc = scoreClass(score);
+    const satRate = getEmpSatisfiedRate(emp.name);
+    return `<div class="emp-card">
+      <div class="emp-card-header">
+        <div class="emp-avatar-lg" style="background:${emp.bg}">${emp.initials}</div>
+        <div>
+          <div class="emp-name">${emp.name}</div>
+          <div class="emp-role">${emp.role}</div>
+        </div>
+        <div class="emp-score-badge ${sc}">${score}</div>
+      </div>
+      <div class="emp-channels">
+        <div class="emp-channel" title="WhatsApp outreach" onclick="filterAndGoToLog('${emp.name}','wa')">
+          <div class="emp-channel-icon">💬</div>
+          <div class="emp-channel-count wa-c">${counts.wa}</div>
+          <div class="emp-channel-label">WA</div>
+        </div>
+        <div class="emp-channel" title="Phone calls" onclick="filterAndGoToLog('${emp.name}','call')">
+          <div class="emp-channel-icon">📞</div>
+          <div class="emp-channel-count call-c">${counts.call}</div>
+          <div class="emp-channel-label">Calls</div>
+        </div>
+        <div class="emp-channel" title="LinkedIn outreach" onclick="filterAndGoToLog('${emp.name}','li')">
+          <div class="emp-channel-icon">💼</div>
+          <div class="emp-channel-count li-c">${counts.li}</div>
+          <div class="emp-channel-label">LinkedIn</div>
+        </div>
+        <div class="emp-channel" title="Email outreach" onclick="filterAndGoToLog('${emp.name}','email')">
+          <div class="emp-channel-icon">✉️</div>
+          <div class="emp-channel-count email-c">${counts.email}</div>
+          <div class="emp-channel-label">Email</div>
+        </div>
+      </div>
+      <div class="emp-footer">
+        <div class="emp-footer-stat">Total: <strong>${counts.total}</strong> outreach</div>
+        <div class="emp-footer-stat">Satisfied: <strong>${satRate}%</strong></div>
+        <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px" onclick="filterAndGoToLog('${emp.name}','')">View Log</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterAndGoToLog(emp, ch) {
+  document.getElementById('log-filter-emp').value = emp;
+  document.getElementById('log-filter-ch').value = ch;
+  document.getElementById('log-filter-rating').value = '';
+  document.getElementById('log-filter-client').value = '';
+  showPage('automation', null);
+  renderOutreachLog();
+}
+
+function renderLeaderboard() {
+  const sorted = EMPLOYEES.map(e=>({
+    ...e,
+    score: scoreEmployee(e.name),
+    total: getEmpChannelCounts(e.name).total,
+    sat: getEmpSatisfiedRate(e.name)
+  })).sort((a,b)=>b.score-a.score);
+
+  const rankClasses = ['gold','silver','bronze','other','other'];
+  const rankEmojis = ['🥇','🥈','🥉','4','5'];
+  document.getElementById('leaderboard-list').innerHTML = sorted.map((e,i)=>`
+    <div class="lb-item">
+      <div class="lb-rank ${rankClasses[i]}">${rankEmojis[i]}</div>
+      <div class="lb-avatar" style="background:${e.bg}">${e.initials}</div>
+      <div>
+        <div class="lb-name">${e.name}</div>
+        <div class="lb-sub">${e.total} touchpoints · ${e.sat}% satisfied</div>
+      </div>
+      <div style="display:flex;align-items:center;margin-left:auto">
+        <div class="lb-score ${scoreClass(e.score)}" style="font-family:'Fraunces',serif;font-size:18px;font-weight:700">${e.score}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderChannelBars() {
+  const channels = [
+    {key:'wa', label:'WhatsApp', color:'var(--wa)'},
+    {key:'call', label:'Calls', color:'var(--accent)'},
+    {key:'li', label:'LinkedIn', color:'var(--li)'},
+    {key:'email', label:'Email', color:'var(--email)'},
+  ];
+  const max = Math.max(...channels.map(c=>OUTREACH_LOG.filter(l=>l.channel===c.key).length),1);
+  document.getElementById('channel-perf-bars').innerHTML = channels.map(c=>{
+    const count = OUTREACH_LOG.filter(l=>l.channel===c.key).length;
+    const pct = Math.round(count/max*100);
+    const pos = OUTREACH_LOG.filter(l=>l.channel===c.key&&(l.rating.includes('Excellent')||l.rating.includes('Satisfied'))).length;
+    const sat = count?Math.round(pos/count*100):0;
+    return `<div class="perf-bar-row">
+      <div class="perf-bar-label">${c.label}</div>
+      <div class="perf-bar-track"><div class="perf-bar-fill" style="width:${pct}%;background:${c.color}"></div></div>
+      <div class="perf-bar-val" style="color:${c.color}">${count}</div>
+      <div style="font-size:11px;color:var(--muted);min-width:60px;text-align:right">${sat}% sat.</div>
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════════
+//  OUTREACH LOG PAGE
+// ════════════════════════════════════
+function renderOutreachLog() {
+  const empF = document.getElementById('log-filter-emp').value;
+  const chF = document.getElementById('log-filter-ch').value;
+  const ratingF = document.getElementById('log-filter-rating').value;
+  const clientF = document.getElementById('log-filter-client').value;
+
+  let rows = [...OUTREACH_LOG].sort((a,b)=>new Date(b.datetime)-new Date(a.datetime));
+  if(empF) rows = rows.filter(r=>r.employee===empF);
+  if(chF) rows = rows.filter(r=>r.channel===chF);
+  if(ratingF) rows = rows.filter(r=>r.rating===ratingF);
+  if(clientF) rows = rows.filter(r=>r.client===clientF);
+
+  if(!rows.length) {
+    document.getElementById('outreach-log-body').innerHTML = `<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted)">No entries match the current filters.</td></tr>`;
+    return;
+  }
+
+  document.getElementById('outreach-log-body').innerHTML = rows.map(r=>{
+    const rc = getRatingClass(r.rating);
+    const durationHtml = r.duration ? `<span style="font-size:10px;background:rgba(14,165,233,.1);color:var(--accent);padding:1px 7px;border-radius:20px;margin-left:6px">⏱ ${r.duration}</span>` : '';
+    return `<tr>
+      <td style="white-space:nowrap;font-size:12px;color:var(--muted2)">${fmtDatetime(r.datetime)}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="width:26px;height:26px;border-radius:8px;background:${EMPLOYEES.find(e=>e.name===r.employee)?.bg||'#333'};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">${EMPLOYEES.find(e=>e.name===r.employee)?.initials||'?'}</div>
+          <span style="font-size:13px;font-weight:600">${r.employee}</span>
+        </div>
+      </td>
+      <td style="font-weight:600;font-size:13px">${r.client}</td>
+      <td>${getChannelBadge(r.channel)}${durationHtml}</td>
+      <td style="font-size:12px;color:var(--muted2);max-width:220px">${r.notes}</td>
+      <td>
+        <div class="rating-wrap">
+          <span class="rating-chip ${rc} selected">${r.rating}</span>
+          <span style="font-size:10px;color:var(--muted);cursor:pointer" onclick="openEditRating(${r.id})">✏️ Edit</span>
+        </div>
+      </td>
+      <td>
+        <div style="display:flex;gap:5px">
+          <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openEditEntry(${r.id})">Edit</button>
+          <button class="btn btn-danger" style="padding:4px 8px;font-size:11px" onclick="deleteEntry(${r.id})">Del</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function openEditRating(id) {
+  const entry = OUTREACH_LOG.find(l=>l.id===id);
+  if(!entry) return;
+  // Quick inline rating update via prompt-style mini modal
+  currentEditId = id;
+  openLogModal(entry.client, entry.channel, entry);
+}
+
+let currentEditId = null;
+function openEditEntry(id) {
+  const entry = OUTREACH_LOG.find(l=>l.id===id);
+  if(!entry) return;
+  currentEditId = id;
+  openLogModal(entry.client, entry.channel, entry);
+}
+
+function deleteEntry(id) {
+  OUTREACH_LOG = OUTREACH_LOG.filter(l=>l.id!==id);
+  renderOutreachLog();
+  renderPerformancePage();
+  showToast('🗑️ Entry deleted');
+}
+
+// ════════════════════════════════════
+//  LOG MODAL
+// ════════════════════════════════════
+function openLogModal(client, channel, existingEntry) {
+  currentEditId = existingEntry ? existingEntry.id : null;
+  selectedRating = '';
+
+  // Set defaults
+  const now = new Date();
+  const local = new Date(now - now.getTimezoneOffset()*60000).toISOString().slice(0,16);
+  document.getElementById('log-datetime').value = existingEntry ? existingEntry.datetime : local;
+  document.getElementById('log-channel').value = existingEntry ? existingEntry.channel : (channel||'call');
+  document.getElementById('log-notes').value = existingEntry ? existingEntry.notes : '';
+  document.getElementById('log-duration').value = existingEntry ? existingEntry.duration : '';
+
+  if(existingEntry) {
+    document.getElementById('log-employee').value = existingEntry.employee;
+    document.getElementById('log-client').value = existingEntry.client;
+    selectedRating = existingEntry.rating;
+  } else {
+    if(client) document.getElementById('log-client').value = client;
+  }
+
+  // Reset rating UI
+  document.querySelectorAll('#rating-options .rating-option').forEach(el=>{
+    el.classList.remove('sel');
+    if(selectedRating && el.dataset.val===selectedRating) el.classList.add('sel');
+  });
+
+  toggleDurationField();
+  document.getElementById('log-channel').onchange = toggleDurationField;
+
+  document.getElementById('log-modal-overlay').classList.add('open');
+}
+function toggleDurationField(){
+  const ch = document.getElementById('log-channel').value;
+  document.getElementById('log-duration-group').style.display = ch==='call' ? '' : 'none';
+}
+function closeLogModal(){
+  document.getElementById('log-modal-overlay').classList.remove('open');
+  currentEditId = null;
+  selectedRating = '';
+}
+function handleLogOverlayClick(e){
+  if(e.target===document.getElementById('log-modal-overlay')) closeLogModal();
+}
+function selectRating(el){
+  document.querySelectorAll('#rating-options .rating-option').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+  selectedRating = el.dataset.val;
+}
+function saveLog(){
+  const emp = document.getElementById('log-employee').value;
+  const client = document.getElementById('log-client').value;
+  const ch = document.getElementById('log-channel').value;
+  const dt = document.getElementById('log-datetime').value;
+  const notes = document.getElementById('log-notes').value.trim();
+  const dur = document.getElementById('log-duration').value.trim();
+
+  if(!emp||!client||!ch||!dt){showToast('⚠️ Fill required fields');return;}
+  if(!selectedRating){showToast('⚠️ Select a satisfaction rating');return;}
+
+  if(currentEditId){
+    const idx = OUTREACH_LOG.findIndex(l=>l.id===currentEditId);
+    if(idx>-1){
+      OUTREACH_LOG[idx] = {...OUTREACH_LOG[idx], employee:emp, client, channel:ch, datetime:dt, notes, rating:selectedRating, duration:dur};
+    }
+    showToast('✅ Entry updated!');
+  } else {
+    OUTREACH_LOG.push({id:nextId++, employee:emp, client, channel:ch, datetime:dt, notes, rating:selectedRating, duration:dur});
+    showToast('✅ Outreach logged successfully!');
+  }
+
+  closeLogModal();
+  renderOutreachLog();
+  renderPerformancePage();
+}
+
+// ════════════════════════════════════
+//  COMMS PAGE
+// ════════════════════════════════════
+const CLIENTS_DATA = {
+  mehta:{name:'Mehta Ceramics',sub:'+91 98765 43210 · Ahmedabad',avatar:'MC',avatarBg:'linear-gradient(135deg,#0ea5e9,#6366f1)',phone:'+919876543210',waMsg:'Hello Mehta Ceramics, this is Export Support India. Following up on your onboarding.',logs:[{type:'wa',icon:'💬',note:'Sent onboarding checklist and document requirements.',time:'Today, 10:22 AM',duration:null},{type:'call',icon:'📞',note:'Introductory call with Mr. Mehta. Discussed UAE market entry timeline.',time:'Feb 26, 3:15 PM',duration:'9 min'},{type:'li',icon:'💼',note:'Sent LinkedIn message to Mr. Mehta with company profile.',time:'Feb 26, 2:00 PM',duration:null},{type:'wa',icon:'💬',note:'Shared Export Support India brochure and pricing plans.',time:'Feb 25, 11:00 AM',duration:null}]},
+  agro:{name:'AgroFresh Exports',sub:'+91 87654 32109 · Pune',avatar:'AF',avatarBg:'linear-gradient(135deg,#10b981,#059669)',phone:'+918765432109',waMsg:'Hello AgroFresh, this is Export Support India. Here is your campaign update.',logs:[{type:'wa',icon:'💬',note:'Shared USA buyer list — 34 qualified leads identified.',time:'Today, 9:00 AM',duration:null},{type:'call',icon:'📞',note:'Weekly sync. Reviewed market gaps in Canada.',time:'Feb 25, 4:00 PM',duration:'18 min'},{type:'email',icon:'✉️',note:'Sent monthly performance report PDF.',time:'Feb 20, 12:00 PM',duration:null}]},
+  radha:{name:'Radha Textiles',sub:'+91 99887 76655 · Surat',avatar:'RT',avatarBg:'linear-gradient(135deg,#f59e0b,#d97706)',phone:'+919988776655',waMsg:'Hello Radha Textiles, this is Export Support India. Your Euro campaign update is ready.',logs:[{type:'call',icon:'📞',note:'Discussed German buyer feedback. 3 interested parties confirmed.',time:'Feb 26, 2:00 PM',duration:'12 min'},{type:'email',icon:'✉️',note:'Sent translated product catalogue for German buyers.',time:'Feb 22, 10:30 AM',duration:null}]},
+  keystone:{name:'Keystone Infra Co.',sub:'+91 98110 00123 · Delhi',avatar:'KI',avatarBg:'linear-gradient(135deg,#8b5cf6,#6366f1)',phone:'+919811000123',waMsg:'Hello Keystone Infra, this is Export Support India. Your SIMEC report is ready for review.',logs:[{type:'wa',icon:'💬',note:'SIMEC report for Qatar market sent for review.',time:'Today, 8:45 AM',duration:null},{type:'call',icon:'📞',note:'Strategy call. Finalized Oman entry plan.',time:'Feb 24, 11:00 AM',duration:'24 min'},{type:'li',icon:'💼',note:'Connected with decision-makers at Qatar infrastructure firm.',time:'Feb 22, 3:00 PM',duration:null},{type:'call',icon:'📞',note:'Onboarding call — aligned on SIMEC campaign goals.',time:'Feb 12, 10:00 AM',duration:'35 min'}]},
   sunrise:{name:'Sunrise Pharma',sub:'+91 91234 56789 · Mumbai',avatar:'SP',avatarBg:'linear-gradient(135deg,#ef4444,#dc2626)',phone:'+919123456789',waMsg:'Hello Sunrise Pharma, this is Export Support India. We wanted to discuss resuming your campaign.',logs:[{type:'wa',icon:'💬',note:'Sent follow-up regarding campaign hold status.',time:'Feb 23, 9:00 AM',duration:null},{type:'call',icon:'📞',note:'Discussed reason for hold — regulatory clearance pending.',time:'Feb 20, 2:30 PM',duration:'8 min'}]}
 };
 
 function renderLogs(clientId) {
-  const c = CLIENTS[clientId];
+  const c = CLIENTS_DATA[clientId];
   document.getElementById('panel-avatar').textContent = c.avatar;
   document.getElementById('panel-avatar').style.background = c.avatarBg;
   document.getElementById('panel-name').textContent = c.name;
@@ -717,14 +1514,15 @@ function renderLogs(clientId) {
   const wabtn = document.getElementById('panel-wa-btn');
   wabtn.href = waUrl;
   wabtn.onclick = () => showToast(`📲 Opening WhatsApp for ${c.name}...`);
-  const callbtn = document.getElementById('panel-call-btn');
-  callbtn.href = `tel:${c.phone}`;
-  callbtn.onclick = () => showToast(`📞 Calling ${c.name}...`);
+  document.getElementById('panel-call-btn').href = `tel:${c.phone}`;
+
+  const typeColors = {wa:'var(--wa)',call:'var(--accent)',li:'var(--li)',email:'var(--email)'};
+  const typeLabels = {wa:'WhatsApp',call:'Phone Call',li:'LinkedIn',email:'Email'};
   document.getElementById('log-list').innerHTML = c.logs.map(l=>`
     <div class="log-entry">
       <div class="log-icon">${l.icon}</div>
       <div style="flex:1">
-        <div class="log-type ${l.type}">${l.type==='wa'?'WhatsApp':'Phone Call'}${l.duration?`<span class="log-duration">⏱ ${l.duration}</span>`:''}</div>
+        <div class="log-type ${l.type}">${typeLabels[l.type]||l.type}${l.duration?`<span class="log-duration">⏱ ${l.duration}</span>`:''}</div>
         <div class="log-note">${l.note}</div>
         <div class="log-time">${l.time}</div>
       </div>
@@ -735,79 +1533,57 @@ function selectClient(id, el) {
   renderLogs(id);
   document.querySelectorAll('.comms-client-item').forEach(i=>i.classList.remove('active'));
   el.classList.add('active');
-  // On mobile: hide list, show panel
-  if(window.innerWidth <= 640) {
+  if(window.innerWidth<=640){
     document.getElementById('comms-list').classList.add('hidden');
     document.getElementById('comms-panel').classList.remove('hidden');
   }
 }
-
-function showCommsList() {
+function showCommsList(){
   document.getElementById('comms-list').classList.remove('hidden');
   document.getElementById('comms-panel').classList.add('hidden');
 }
 
-// Init comms panel
-window.addEventListener('DOMContentLoaded', () => {
-  renderLogs('mehta');
-  // On desktop, show panel by default
-  if(window.innerWidth > 640) {
-    document.getElementById('comms-panel').classList.remove('hidden');
-  }
-});
+// ════════════════════════════════════
+//  SIDEBAR & NAV
+// ════════════════════════════════════
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('sidebar-overlay').classList.add('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');}
 
-// Show/hide panel on resize
-window.addEventListener('resize', () => {
-  if(window.innerWidth > 640) {
-    document.getElementById('comms-panel').classList.remove('hidden');
-    document.getElementById('comms-list').classList.remove('hidden');
-  }
-});
-
-// ─── SIDEBAR ───
-function openSidebar() {
-  document.getElementById('sidebar').classList.add('open');
-  document.getElementById('sidebar-overlay').classList.add('open');
-}
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebar-overlay').classList.remove('open');
-}
-
-// ─── PAGE NAV ───
 const PAGE_TITLES = {
   dashboard:['Dashboard','Overview'],projects:['Projects','All Campaigns'],
   tasks:['My Tasks','Pending & Active'],clients:['Clients','MSME Partners'],
   comms:['WhatsApp & Calls','Communication Log'],markets:['Market Campaigns','SIMEC'],
-  reports:['Reports','Analytics'],team:['Team','Members'],settings:['Settings','Preferences']
+  reports:['Reports','Analytics'],settings:['Settings','Preferences'],
+  performance:['Team Performance','Activity & Satisfaction'],
+  automation:['Outreach Log','All Touchpoints'],
+  companyrecords:['Company Records','Export Support India CRM'],
 };
 
 function showPage(name, sidebarEl, bottomNavId) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
-
-  // Sidebar active state
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  if(sidebarEl && sidebarEl.classList.contains('nav-item')) sidebarEl.classList.add('active');
-
-  // Bottom nav active state
-  if(bottomNavId) {
+  if(sidebarEl && sidebarEl.classList && sidebarEl.classList.contains('nav-item')) sidebarEl.classList.add('active');
+  if(bottomNavId){
     document.querySelectorAll('.bottom-nav-item').forEach(n=>n.classList.remove('active'));
-    document.getElementById(bottomNavId).classList.add('active');
+    const bn = document.getElementById(bottomNavId);
+    if(bn) bn.classList.add('active');
   }
-
   const t = PAGE_TITLES[name]||[name,''];
   document.getElementById('page-title').innerHTML = t[0]+' <span>'+t[1]+'</span>';
   closeSidebar();
-
-  // Reset comms view on mobile when navigating away and back
-  if(name === 'comms' && window.innerWidth <= 640) {
+  if(name==='comms'&&window.innerWidth<=640){
     document.getElementById('comms-list').classList.remove('hidden');
     document.getElementById('comms-panel').classList.add('hidden');
   }
+  if(name==='performance') renderPerformancePage();
+  if(name==='automation') renderOutreachLog();
+  if(name==='companyrecords') initCRPage();
 }
 
-// ─── MODAL ───
+// ════════════════════════════════════
+//  TASK MODAL
+// ════════════════════════════════════
 function openModal(){document.getElementById('modal-overlay').classList.add('open');setTimeout(()=>document.getElementById('task-title-input').focus(),250);}
 function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
 function handleOverlayClick(e){if(e.target===document.getElementById('modal-overlay'))closeModal();}
@@ -818,21 +1594,598 @@ function saveTask(){
   document.getElementById('task-title-input').value='';
 }
 
-// ─── TOAST ───
+// ════════════════════════════════════
+//  TOAST
+// ════════════════════════════════════
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.className='toast show';
   setTimeout(()=>t.classList.remove('show'),3000);
 }
 
-// ─── TABS ───
+// ════════════════════════════════════
+//  TABS
+// ════════════════════════════════════
 document.querySelectorAll('.tabs').forEach(g=>{
   g.querySelectorAll('.tab').forEach(tab=>{
     tab.addEventListener('click',()=>{g.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));tab.classList.add('active');});
   });
 });
 
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeLogModal();}});
+
+// ════════════════════════════════════
+//  COMPANY RECORDS DATA & MODULE
+// ════════════════════════════════════
+
+const PRODUCT_CATALOG = [
+  'Bottles_HDPE','Bottles_PET','Bottles_PETG','BULKBAGS Manufacturer','Cable Management system',
+  'Canopy Locks','CheckWeigher','Closures_CAPS','CodeMarking','Cold_Steel_Building_Systems',
+  'Conveyors','Corrugated Boxes','Dairy Processing Equipment','Electrical Panels','Filtration Systems',
+  'Flexible Packaging','Food Processing Machinery','Garments & Textiles','HDPE Pipes','Industrial Pumps',
+  'Injection Moulding','Jute Products','Labels & Stickers','LED Lighting','Machine Tools',
+  'Pharmaceutical Packaging','Plastic Granules','PP Woven Bags','Rubber Components','Safety Equipment',
+  'Spare Parts','Spices & Food','Steel Fabrication','Storage Tanks','Wooden Furniture',
+];
+
+const CATEGORIES = ['Mill/Factory/Mfg','Trading Company','Distributor/Agent','Service Provider','Association/Body','Startup','Other'];
+const INDUSTRIES = ['Plastics','Pharmaceuticals','Agriculture & Food','Textiles & Garments','Engineering & Machinery','Chemicals','Electronics','Construction','Packaging','Logistics','Other'];
+const SOURCES = ['Exhibition','Trade Portal','LinkedIn','Reference','Cold Call','Email Campaign','Website Inquiry','WhatsApp','Partner Referral'];
+const SALES_STAGES = ['Capture Information','Future Lead','Demo Booked','Demo Done','Proposal Sent','Negotiation','Close the deal','Not Interested','Disqualified','Active Client'];
+
+let CR_COMPANIES = [
+  {id:340, company:'AJIT INDUSTRIES PVT. LTD.', brand:'Ajit Industries', category:'Mill/Factory/Mfg', salesStage:'Not Interested', leadOwner:'Mayank', industry:'Engineering & Machinery', sourceType:'Exhibition', sourceName:'Plastindia 2023', status:'Not Interested', msml:'M', demoBooking:'', demoScheduled:'', demoHeld:'', boardingDate:'', address1:'Plot 45, Industrial Area Phase 2', address2:'', city:'Ludhiana', pincode:'141003', state:'Punjab', country:'India', countryCode:'+91', areaCode:'', tel1:'9876541234', tel2:'', tel3:'', fax:'', email1:'info@ajitindustries.com', email2:'', email3:'', website:'www.ajitindustries.com', activeClient:false, products:['Machine Tools','Industrial Pumps'], contacts:[{name:'Suresh Sharma',role:'MD',phone:'9876541234',email:'suresh@ajitindustries.com'}], notes:'Strong manufacturer, not interested at this stage. Follow up Q4.', companyId:'340'},
+  {id:843, company:"All India Plastics Manufacturers' Association", brand:'AIPMA', category:'Association/Body', salesStage:'Disqualified', leadOwner:'Priya K.', industry:'Plastics', sourceType:'Exhibition', sourceName:'PlastIndia 2024', status:'Disqualified', msml:'L', demoBooking:'', demoScheduled:'', demoHeld:'', boardingDate:'', address1:'T-1, Sagarmatha Complex, Andheri East', address2:'', city:'Mumbai', pincode:'400069', state:'Maharashtra', country:'India', countryCode:'+91', areaCode:'', tel1:'02228263773', tel2:'', tel3:'', fax:'', email1:'aipma@aipma.net', email2:'', email3:'', website:'www.aipma.net', activeClient:false, products:['Bottles_HDPE','Plastic Granules'], contacts:[{name:'Rajiv Mehta',role:'Secretary General',phone:'9876500001',email:'rajiv@aipma.net'}], notes:'Industry association — not target segment.', companyId:'843'},
+  {id:673, company:'Allespack Systems Private Limited', brand:'Allespack', category:'Mill/Factory/Mfg', salesStage:'Not Interested', leadOwner:'Amit M.', industry:'Packaging', sourceType:'LinkedIn', sourceName:'', status:'Not Interested', msml:'S', demoBooking:'', demoScheduled:'', demoHeld:'', boardingDate:'', address1:'B-12 GIDC Industrial Estate', address2:'Vatva', city:'Ahmedabad', pincode:'382445', state:'Gujarat', country:'India', countryCode:'+91', areaCode:'', tel1:'7926830000', tel2:'', tel3:'', fax:'', email1:'info@allespack.com', email2:'', email3:'', website:'www.allespack.com', activeClient:false, products:['Flexible Packaging','Corrugated Boxes'], contacts:[], notes:'', companyId:'673'},
+  {id:661, company:'Alvi Packaging Industries P Ltd.', brand:'Alvi Packaging', category:'Mill/Factory/Mfg', salesStage:'Future Lead', leadOwner:'Rajan S.', industry:'Packaging', sourceType:'Trade Portal', sourceName:'Indiamart', status:'Future Lead', msml:'S', demoBooking:'2026-03-15', demoScheduled:'2026-03-18', demoHeld:'', boardingDate:'', address1:'Survey No 41, Naroda Industrial Area', address2:'', city:'Ahmedabad', pincode:'382330', state:'Gujarat', country:'India', countryCode:'+91', areaCode:'', tel1:'9825012345', tel2:'', tel3:'', fax:'', email1:'alvipackaging@gmail.com', email2:'', email3:'', website:'', activeClient:false, products:['PP Woven Bags','Flexible Packaging'], contacts:[{name:'Nikhil Alvi',role:'Director',phone:'9825012345',email:'alvipackaging@gmail.com'}], notes:'Warm lead. Interested in UAE markets. Demo scheduled.', companyId:'661'},
+  {id:434, company:'AMAN ENGINEERING WORKS', brand:'Aman Engineering', category:'Mill/Factory/Mfg', salesStage:'Not Interested', leadOwner:'Meera V.', industry:'Engineering & Machinery', sourceType:'Cold Call', sourceName:'', status:'Not Interested', msml:'M', demoBooking:'', demoScheduled:'', demoHeld:'', boardingDate:'', address1:'C-105 Focal Point Industrial Area', address2:'', city:'Ludhiana', pincode:'141010', state:'Punjab', country:'India', countryCode:'+91', areaCode:'', tel1:'9815678901', tel2:'', tel3:'', fax:'', email1:'amanengworks@yahoo.com', email2:'', email3:'', website:'', activeClient:false, products:['Machine Tools','Spare Parts'], contacts:[], notes:'', companyId:'434'},
+  {id:519, company:'Ambajee Polymers', brand:'Ambajee Polymers', category:'Mill/Factory/Mfg', salesStage:'Close the deal', leadOwner:'Mayank', industry:'Plastics', sourceType:'Exhibition', sourceName:'Cable And Power 2023', status:'Not Interested', msml:'', demoBooking:'', demoScheduled:'', demoHeld:'2026-02-10', boardingDate:'', address1:'A-11 Jhilmil Industrial Area', address2:'', city:'Delhi', pincode:'110095', state:'Delhi', country:'India', countryCode:'+91', areaCode:'', tel1:'9810012345', tel2:'', tel3:'', fax:'', email1:'ambajeepolymers1985@gmail.com', email2:'info@ambajeepolymers.com', email3:'', website:'', activeClient:true, products:['Bottles_HDPE','Bottles_PET','BULKBAGS Manufacturer','Cable Management system'], contacts:[{name:'Ramesh Gupta',role:'Owner',phone:'9810012345',email:'ambajeepolymers1985@gmail.com'}], notes:'Very engaged client. Demo held Feb 10. Closing stage — send final proposal.', companyId:'519'},
+  {id:777, company:'Amer NSM India Pvt. Ltd.', brand:'Amer NSM', category:'Trading Company', salesStage:'Not Interested', leadOwner:'Priya K.', industry:'Electronics', sourceType:'Reference', sourceName:'Rajan referral', status:'Not Applicable', msml:'L', demoBooking:'', demoScheduled:'', demoHeld:'', boardingDate:'', address1:'Tower B, DLF Cyber City', address2:'Phase 2', city:'Gurugram', pincode:'122002', state:'Haryana', country:'India', countryCode:'+91', areaCode:'', tel1:'01244000000', tel2:'', tel3:'', fax:'', email1:'contact@amernsm.in', email2:'', email3:'', website:'www.amernsm.in', activeClient:false, products:['Electrical Panels','LED Lighting'], contacts:[{name:'Ashok Nair',role:'GM Sales',phone:'9999012345',email:'ashok@amernsm.in'}], notes:'Large company — does not need our services.', companyId:'777'},
+  {id:619, company:'Amit Shoes Pvt. Ltd.', brand:'Amit Shoes', category:'Mill/Factory/Mfg', salesStage:'Capture Information', leadOwner:'Amit M.', industry:'Other', sourceType:'LinkedIn', sourceName:'', status:'Capture Information', msml:'S', demoBooking:'', demoScheduled:'', demoHeld:'', boardingDate:'', address1:'F-12 Sector 63 Industrial Area', address2:'', city:'Noida', pincode:'201307', state:'Uttar Pradesh', country:'India', countryCode:'+91', areaCode:'', tel1:'9876543210', tel2:'', tel3:'', fax:'', email1:'info@amitshoes.com', email2:'', email3:'', website:'', activeClient:false, products:[], contacts:[], notes:'Capturing basic info. Follow up this week.', companyId:'619'},
+  {id:788, company:'Amrita Global Enterprise', brand:'Amrita Global', category:'Trading Company', salesStage:'Disqualified', leadOwner:'Rajan S.', industry:'Textiles & Garments', sourceType:'Website Inquiry', sourceName:'', status:'Disqualified', msml:'S', demoBooking:'', demoScheduled:'', demoHeld:'', boardingDate:'', address1:'12 Old Market Road', address2:'', city:'Surat', pincode:'395003', state:'Gujarat', country:'India', countryCode:'+91', areaCode:'', tel1:'9898123456', tel2:'', tel3:'', fax:'', email1:'amritaglobal@gmail.com', email2:'', email3:'', website:'', activeClient:false, products:['Garments & Textiles'], contacts:[], notes:'', companyId:'788'},
+  {id:435, company:'Anand Engineers Pvt. Ltd.', brand:'Anand Engineers', category:'Mill/Factory/Mfg', salesStage:'Future Lead', leadOwner:'Meera V.', industry:'Engineering & Machinery', sourceType:'Exhibition', sourceName:'ETC Exhibition 2023', status:'Future Lead', msml:'M', demoBooking:'2026-04-01', demoScheduled:'', demoHeld:'', boardingDate:'', address1:'Plot 22, MIDC Bhosari', address2:'', city:'Pune', pincode:'411026', state:'Maharashtra', country:'India', countryCode:'+91', areaCode:'', tel1:'9823456789', tel2:'', tel3:'', fax:'', email1:'info@anandengineers.co.in', email2:'', email3:'', website:'www.anandengineers.co.in', activeClient:false, products:['Conveyors','Industrial Pumps','Spare Parts'], contacts:[{name:'Prashant Anand',role:'CEO',phone:'9823456789',email:'prashant@anandengineers.co.in'},{name:'Meena Shah',role:'Export Manager',phone:'9823456780',email:'meena@anandengineers.co.in'}], notes:'Strong engineering firm. Interested in Germany/Netherlands markets.', companyId:'435'},
+];
+
+let crActiveId = null;
+let crSortKey = 'id';
+let crFilterStatus = '';
+let crSearchQuery = '';
+
+function getStatusPillClass(s){
+  if(!s) return 'capture';
+  const sl = s.toLowerCase();
+  if(sl.includes('active')) return 'active';
+  if(sl.includes('not interested')||sl.includes('not applicable')) return 'notint';
+  if(sl.includes('future')) return 'future';
+  if(sl.includes('disqualified')) return 'disq';
+  if(sl.includes('capture')) return 'capture';
+  if(sl.includes('close')) return 'closedeal';
+  if(sl.includes('demo')) return 'demo';
+  return 'capture';
+}
+
+function getCoAvatarColor(name){
+  const colors = [
+    'linear-gradient(135deg,#0ea5e9,#6366f1)',
+    'linear-gradient(135deg,#10b981,#059669)',
+    'linear-gradient(135deg,#f59e0b,#d97706)',
+    'linear-gradient(135deg,#8b5cf6,#6366f1)',
+    'linear-gradient(135deg,#ef4444,#dc2626)',
+    'linear-gradient(135deg,#0077b5,#0ea5e9)',
+    'linear-gradient(135deg,#a855f7,#8b5cf6)',
+    'linear-gradient(135deg,#f97316,#ef4444)',
+  ];
+  let h = 0; for(let c of name) h = (h*31+c.charCodeAt(0))%colors.length;
+  return colors[h];
+}
+function getCoInitials(name){
+  const w = name.replace(/pvt\.?|ltd\.?|private|limited|industries|enterprise|systems/gi,'').trim().split(/\s+/);
+  return (w[0]?.[0]||'')+(w[1]?.[0]||w[0]?.[1]||'');
+}
+
+function renderCRList(){
+  let data = [...CR_COMPANIES];
+  if(crFilterStatus) data = data.filter(c=>c.salesStage===crFilterStatus||c.status===crFilterStatus);
+  if(crSearchQuery){
+    const q = crSearchQuery.toLowerCase();
+    data = data.filter(c=>c.company.toLowerCase().includes(q)||c.brand.toLowerCase().includes(q)||String(c.id).includes(q)||c.industry.toLowerCase().includes(q)||c.leadOwner.toLowerCase().includes(q));
+  }
+  if(crSortKey==='name') data.sort((a,b)=>a.company.localeCompare(b.company));
+  else data.sort((a,b)=>a.id-b.id);
+
+  document.getElementById('cr-count').textContent = `(${data.length} of ${CR_COMPANIES.length})`;
+
+  if(!data.length){
+    document.getElementById('cr-list-body').innerHTML = '<div style="padding:30px;text-align:center;color:var(--muted);font-size:13px">No companies match filters.</div>';
+    return;
+  }
+  document.getElementById('cr-list-body').innerHTML = data.map(c=>{
+    const init = getCoInitials(c.company).toUpperCase();
+    const bg = getCoAvatarColor(c.company);
+    const pc = getStatusPillClass(c.salesStage||c.status);
+    return `<div class="cr-company-row${crActiveId===c.id?' active':''}" onclick="openCompanyRecord(${c.id})">
+      <div class="cr-co-avatar" style="background:${bg}">${init}</div>
+      <div style="flex:1;min-width:0">
+        <div class="cr-co-name">${c.company}</div>
+        <div class="cr-co-meta">ID: ${c.id} · ${c.industry||'—'} · ${c.city||'—'}</div>
+      </div>
+      <div class="cr-co-status">
+        <span class="cr-pill ${pc}">${(c.salesStage||c.status||'').replace('Not Interested','Not Int.').replace('Disqualified','Disq.').replace('Capture Information','Capture').replace('Future Lead','Future').replace('Close the deal','Close').replace('Active Client','Active')}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterCompanies(){
+  crSearchQuery = document.getElementById('cr-search-input').value;
+  renderCRList();
+}
+function setCRFilter(el, val){
+  crFilterStatus = val;
+  document.querySelectorAll('.cr-filter-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderCRList();
+}
+function sortCompanies(key){ crSortKey = key; renderCRList(); }
+
+function openCompanyRecord(id){
+  crActiveId = id;
+  renderCRList();
+  const c = CR_COMPANIES.find(x=>x.id===id);
+  if(!c) return;
+  renderCompanyRecord(c);
+}
+
+function renderCompanyRecord(c){
+  const bg = getCoAvatarColor(c.company);
+  const init = getCoInitials(c.company).toUpperCase();
+  const pc = getStatusPillClass(c.salesStage||c.status);
+
+  // Demo stages
+  const demoStages = [
+    {key:'demoBooking', label:'Booked'},
+    {key:'demoScheduled', label:'Scheduled'},
+    {key:'demoHeld', label:'Demo Held'},
+    {key:'boardingDate', label:'Onboarded'},
+  ];
+
+  const panel = document.getElementById('cr-record-panel');
+  panel.innerHTML = `
+  <div class="cr-record-header">
+    <div class="cr-header-avatar" style="background:${bg}">${init}</div>
+    <div class="cr-header-info">
+      <div class="cr-header-name">${c.company}</div>
+      <div class="cr-header-brand">${c.brand||'—'} · ${c.category||'—'} · ${c.city||'—'}, ${c.state||''}</div>
+      <div class="cr-header-pills">
+        <span class="cr-pill ${pc}">${c.salesStage||c.status||'—'}</span>
+        ${c.activeClient?'<span class="cr-active-badge">✓ Active Client</span>':''}
+        ${c.industry?`<span style="font-size:10px;background:var(--surface2);color:var(--muted2);padding:3px 8px;border-radius:5px;border:1px solid var(--border)">${c.industry}</span>`:''}
+        ${c.msml?`<span style="font-size:10px;font-weight:800;background:rgba(14,165,233,.1);color:var(--accent);padding:3px 8px;border-radius:5px;border:1px solid rgba(14,165,233,.2)">${c.msml}</span>`:''}
+      </div>
+    </div>
+    <div class="cr-header-actions">
+      <a class="icon-btn wa" href="https://wa.me/91${c.tel1}?text=Hello%20${encodeURIComponent(c.company)}%2C%20this%20is%20Export%20Support%20India." target="_blank" onclick="showToast('📲 WhatsApp...')">💬</a>
+      <a class="icon-btn call" href="tel:+91${c.tel1}" onclick="showToast('📞 Calling...')">📞</a>
+      <span class="icon-btn li" onclick="showToast('💼 LinkedIn...')">💼</span>
+      <span class="icon-btn email" onclick="showToast('✉️ Email...')">✉️</span>
+      <button class="btn btn-danger" style="padding:6px 10px;font-size:12px" onclick="deleteCompany(${c.id})">🗑️</button>
+    </div>
+  </div>
+
+  <div class="cr-tabs-bar" id="cr-tabs-bar">
+    <div class="cr-tab active" onclick="switchCRTab(this,'overview')">Overview</div>
+    <div class="cr-tab" onclick="switchCRTab(this,'details')">Details & Address</div>
+    <div class="cr-tab" onclick="switchCRTab(this,'demo')">Demo & Pipeline</div>
+    <div class="cr-tab" onclick="switchCRTab(this,'contacts')">Contacts (${c.contacts.length})</div>
+    <div class="cr-tab" onclick="switchCRTab(this,'products')">Products (${c.products.length})</div>
+    <div class="cr-tab" onclick="switchCRTab(this,'notes')">Notes & Activity</div>
+  </div>
+
+  <!-- TAB: OVERVIEW -->
+  <div class="cr-tab-content active" id="cr-tab-overview">
+    <div class="cr-quick-stats">
+      <div class="cr-quick-stat"><div class="val" style="color:var(--accent)">${c.products.length}</div><div class="lbl">Products</div></div>
+      <div class="cr-quick-stat"><div class="val" style="color:var(--accent3)">${c.contacts.length}</div><div class="lbl">Contacts</div></div>
+      <div class="cr-quick-stat"><div class="val" style="color:var(--accent2)">${c.demoHeld?'Done':c.demoScheduled?'Sched.':c.demoBooking?'Booked':'—'}</div><div class="lbl">Demo</div></div>
+    </div>
+
+    <div class="cr-section">
+      <div class="cr-section-label">Key Information</div>
+      <div class="cr-form-grid-2">
+        <div class="cr-field"><label>Company / Brand</label><input class="cr-input" value="${c.company}" onchange="updateCRField(${c.id},'company',this.value)" oninput="markUnsaved()"/></div>
+        <div class="cr-field"><label>Brand Name</label><input class="cr-input" value="${c.brand}" onchange="updateCRField(${c.id},'brand',this.value)" oninput="markUnsaved()"/></div>
+        <div class="cr-field"><label>Category</label><select class="cr-input" onchange="updateCRField(${c.id},'category',this.value)">
+          ${CATEGORIES.map(x=>`<option${c.category===x?' selected':''}>${x}</option>`).join('')}
+        </select></div>
+        <div class="cr-field"><label>Industry</label><select class="cr-input" onchange="updateCRField(${c.id},'industry',this.value)">
+          ${INDUSTRIES.map(x=>`<option${c.industry===x?' selected':''}>${x}</option>`).join('')}
+        </select></div>
+      </div>
+    </div>
+
+    <div class="cr-section">
+      <div class="cr-section-label">Sales Info</div>
+      <div class="cr-form-grid-2">
+        <div class="cr-field"><label>Sales Stage</label><select class="cr-input" onchange="updateCRField(${c.id},'salesStage',this.value);renderCRList()">
+          ${SALES_STAGES.map(x=>`<option${c.salesStage===x?' selected':''}>${x}</option>`).join('')}
+        </select></div>
+        <div class="cr-field"><label>Lead Owner</label><select class="cr-input" onchange="updateCRField(${c.id},'leadOwner',this.value)">
+          ${['Rajan S.','Priya K.','Amit M.','Meera V.','Mayank'].map(x=>`<option${c.leadOwner===x?' selected':''}>${x}</option>`).join('')}
+        </select></div>
+        <div class="cr-field"><label>Status</label><select class="cr-input" onchange="updateCRField(${c.id},'status',this.value)">
+          ${['Active Client','Not Interested','Not Applicable','Future Lead','Disqualified','Capture Information','Close the deal','Demo Booked','Demo Done','On Hold'].map(x=>`<option${c.status===x?' selected':''}>${x}</option>`).join('')}
+        </select></div>
+        <div class="cr-field"><label>Company Size</label>
+          <div class="cr-size-sel" id="cr-size-sel-${c.id}">
+            ${['M','S','L','XL'].map(sz=>`<div class="cr-size-btn${c.msml===sz?' sel':''}" onclick="setCRSize(${c.id},'${sz}',this)">${sz}</div>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cr-section">
+      <div class="cr-section-label">Source</div>
+      <div class="cr-form-grid-2">
+        <div class="cr-field"><label>Source Type</label><select class="cr-input" onchange="updateCRField(${c.id},'sourceType',this.value)">
+          ${SOURCES.map(x=>`<option${c.sourceType===x?' selected':''}>${x}</option>`).join('')}
+        </select></div>
+        <div class="cr-field"><label>Source Name</label><input class="cr-input" value="${c.sourceName}" onchange="updateCRField(${c.id},'sourceName',this.value)" oninput="markUnsaved()"/></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: DETAILS -->
+  <div class="cr-tab-content" id="cr-tab-details">
+    <div class="cr-section">
+      <div class="cr-section-label">Address</div>
+      <div class="cr-form-grid-2" style="margin-bottom:10px">
+        <div class="cr-field" style="grid-column:1/-1"><label>Address Line 1</label><input class="cr-input" value="${c.address1}" onchange="updateCRField(${c.id},'address1',this.value)" oninput="markUnsaved()"/></div>
+        <div class="cr-field" style="grid-column:1/-1"><label>Address Line 2</label><input class="cr-input" value="${c.address2}" onchange="updateCRField(${c.id},'address2',this.value)" oninput="markUnsaved()"/></div>
+      </div>
+      <div class="cr-form-grid-3" style="margin-bottom:10px">
+        <div class="cr-field"><label>City</label><input class="cr-input" value="${c.city}" onchange="updateCRField(${c.id},'city',this.value)" oninput="markUnsaved()"/></div>
+        <div class="cr-field"><label>Pin Code</label><input class="cr-input" value="${c.pincode}" onchange="updateCRField(${c.id},'pincode',this.value)" oninput="markUnsaved()"/></div>
+        <div class="cr-field"><label>State</label><input class="cr-input" value="${c.state}" onchange="updateCRField(${c.id},'state',this.value)" oninput="markUnsaved()"/></div>
+      </div>
+      <div class="cr-form-grid-2">
+        <div class="cr-field"><label>Country</label><input class="cr-input" value="${c.country}" onchange="updateCRField(${c.id},'country',this.value)" oninput="markUnsaved()"/></div>
+        <div class="cr-field"><label>Country Code</label><input class="cr-input" value="${c.countryCode}" onchange="updateCRField(${c.id},'countryCode',this.value)" oninput="markUnsaved()"/></div>
+      </div>
+    </div>
+
+    <div class="cr-section">
+      <div class="cr-section-label">Phone & Fax</div>
+      <div class="cr-form-grid-4">
+        <div class="cr-field" style="grid-column:span 2"><label>Tel 1 (Primary)</label><input class="cr-input" value="${c.tel1}" onchange="updateCRField(${c.id},'tel1',this.value)" oninput="markUnsaved()"/></div>
+        <div class="cr-field" style="grid-column:span 2"><label>Tel 2</label><input class="cr-input" value="${c.tel2}" onchange="updateCRField(${c.id},'tel2',this.value)" oninput="markUnsaved()"/></div>
+        <div class="cr-field" style="grid-column:span 2"><label>Tel 3</label><input class="cr-input" value="${c.tel3}" onchange="updateCRField(${c.id},'tel3',this.value)" oninput="markUnsaved()"/></div>
+        <div class="cr-field" style="grid-column:span 2"><label>Fax</label><input class="cr-input" value="${c.fax}" onchange="updateCRField(${c.id},'fax',this.value)" oninput="markUnsaved()"/></div>
+      </div>
+    </div>
+
+    <div class="cr-section">
+      <div class="cr-section-label">Email & Web</div>
+      <div class="cr-form-grid-2">
+        <div class="cr-field" style="grid-column:1/-1"><label>Company Email 1</label><input class="cr-input" type="email" value="${c.email1}" onchange="updateCRField(${c.id},'email1',this.value)" oninput="markUnsaved()"/></div>
+        <div class="cr-field"><label>Company Email 2</label><input class="cr-input" type="email" value="${c.email2}" onchange="updateCRField(${c.id},'email2',this.value)" oninput="markUnsaved()"/></div>
+        <div class="cr-field"><label>Company Email 3</label><input class="cr-input" type="email" value="${c.email3}" onchange="updateCRField(${c.id},'email3',this.value)" oninput="markUnsaved()"/></div>
+        <div class="cr-field" style="grid-column:1/-1"><label>Website</label><input class="cr-input" type="url" value="${c.website}" placeholder="www.example.com" onchange="updateCRField(${c.id},'website',this.value)" oninput="markUnsaved()"/></div>
+      </div>
+    </div>
+    <div class="cr-section">
+      <div class="cr-section-label">Record ID</div>
+      <div class="cr-form-grid-2">
+        <div class="cr-field"><label>Company ID</label><input class="cr-input readonly" value="${c.companyId}" readonly/></div>
+        <div class="cr-field"><label>Active Client</label>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:7px">
+            <input type="checkbox" id="cr-active-${c.id}" ${c.activeClient?'checked':''} onchange="updateCRField(${c.id},'activeClient',this.checked)" style="accent-color:var(--accent3);width:16px;height:16px;cursor:pointer"/>
+            <label for="cr-active-${c.id}" style="font-size:13px;font-weight:600;cursor:pointer;text-transform:none;color:var(--text)">Mark as Active Client</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: DEMO & PIPELINE -->
+  <div class="cr-tab-content" id="cr-tab-demo">
+    <div class="cr-section">
+      <div class="cr-section-label">Demo Journey</div>
+      <div style="padding:16px 0;overflow-x:auto">
+        <div class="cr-demo-timeline">
+          ${demoStages.map((s,i)=>{
+            const filled = !!c[s.key];
+            const done = i<demoStages.findIndex(ds=>!c[ds.key])||filled;
+            return `<div class="cr-demo-step">
+              <div class="cr-demo-dot${filled?' done':done?'':''}">${filled?'✓':i+1}</div>
+              <div class="cr-demo-label">${s.label}</div>
+              <div class="cr-demo-date">${c[s.key]||'—'}</div>
+            </div>${i<demoStages.length-1?`<div class="cr-demo-line${filled?' filled':''}"></div>`:''}`;
+          }).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="cr-section">
+      <div class="cr-section-label">Demo Dates</div>
+      <div class="cr-form-grid-2">
+        <div class="cr-field"><label>Demo Booking Date</label><input class="cr-input" type="date" value="${c.demoBooking}" onchange="updateCRField(${c.id},'demoBooking',this.value);rerenderRecord(${c.id})" oninput="markUnsaved()"/></div>
+        <div class="cr-field"><label>Demo Scheduled Date</label><input class="cr-input" type="date" value="${c.demoScheduled}" onchange="updateCRField(${c.id},'demoScheduled',this.value);rerenderRecord(${c.id})" oninput="markUnsaved()"/></div>
+        <div class="cr-field"><label>Demo Held Date</label><input class="cr-input" type="date" value="${c.demoHeld}" onchange="updateCRField(${c.id},'demoHeld',this.value);rerenderRecord(${c.id})" oninput="markUnsaved()"/></div>
+        <div class="cr-field"><label>Onboarding / Boarding Date</label><input class="cr-input" type="date" value="${c.boardingDate}" onchange="updateCRField(${c.id},'boardingDate',this.value);rerenderRecord(${c.id})" oninput="markUnsaved()"/></div>
+      </div>
+    </div>
+    <div class="cr-section">
+      <div class="cr-section-label">Pipeline Status</div>
+      <div class="cr-form-grid-2">
+        <div class="cr-field"><label>Sales Stage</label><select class="cr-input" onchange="updateCRField(${c.id},'salesStage',this.value);renderCRList()">
+          ${SALES_STAGES.map(x=>`<option${c.salesStage===x?' selected':''}>${x}</option>`).join('')}
+        </select></div>
+        <div class="cr-field"><label>Lead Owner</label><select class="cr-input" onchange="updateCRField(${c.id},'leadOwner',this.value)">
+          ${['Rajan S.','Priya K.','Amit M.','Meera V.','Mayank'].map(x=>`<option${c.leadOwner===x?' selected':''}>${x}</option>`).join('')}
+        </select></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: CONTACTS -->
+  <div class="cr-tab-content" id="cr-tab-contacts">
+    <div class="cr-section">
+      <div class="cr-section-label">Contact Persons</div>
+      <div class="cr-cp-list" id="cr-cp-list-${c.id}">
+        ${c.contacts.length===0?'<div style="color:var(--muted);font-size:13px;padding:12px 0">No contacts added yet.</div>':''}
+        ${c.contacts.map((cp,i)=>`
+        <div class="cr-cp-card" id="cr-cp-${c.id}-${i}">
+          <button class="cr-cp-remove" onclick="removeCRContact(${c.id},${i})">✕</button>
+          <div class="cr-cp-name">${cp.name} <span style="font-size:11px;font-weight:400;color:var(--muted)">(${cp.role})</span></div>
+          <div class="cr-cp-detail">📞 ${cp.phone||'—'} &nbsp;·&nbsp; ✉️ ${cp.email||'—'}</div>
+          <div style="display:flex;gap:6px;margin-top:8px">
+            ${cp.phone?`<a class="icon-btn wa" href="https://wa.me/91${cp.phone}" target="_blank" style="font-size:11px;padding:4px 9px">💬 WA</a>`:''}
+            ${cp.phone?`<a class="icon-btn call" href="tel:+91${cp.phone}" style="font-size:11px;padding:4px 9px">📞 Call</a>`:''}
+            ${cp.email?`<a class="icon-btn email" href="mailto:${cp.email}" style="font-size:11px;padding:4px 9px">✉️ Email</a>`:''}
+          </div>
+        </div>`).join('')}
+      </div>
+      <div class="cr-add-cp-form">
+        <div class="cr-add-cp-title">+ Add Contact Person</div>
+        <div class="cr-form-grid-2" style="margin-bottom:8px">
+          <div class="cr-field"><label>Full Name</label><input class="cr-input" id="cp-name-${c.id}" placeholder="e.g. Rajesh Kumar"/></div>
+          <div class="cr-field"><label>Role / Designation</label><input class="cr-input" id="cp-role-${c.id}" placeholder="e.g. MD, Export Head"/></div>
+          <div class="cr-field"><label>Phone</label><input class="cr-input" id="cp-phone-${c.id}" placeholder="98XXXXXXXX"/></div>
+          <div class="cr-field"><label>Email</label><input class="cr-input" id="cp-email-${c.id}" type="email" placeholder="name@company.com"/></div>
+        </div>
+        <button class="btn btn-primary" style="font-size:12px" onclick="addCRContact(${c.id})">Add Contact</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: PRODUCTS -->
+  <div class="cr-tab-content" id="cr-tab-products">
+    <div class="cr-section">
+      <div class="cr-section-label">Associated Products</div>
+      <div class="cr-products-wrap">
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Selected Products (${c.products.length})</div>
+          <div class="cr-product-list" id="cr-product-list-${c.id}">
+            ${c.products.length===0?'<div style="padding:16px;text-align:center;color:var(--muted);font-size:12px">No products selected</div>':''}
+            ${c.products.map((p,i)=>`<div class="cr-product-item">
+              <input type="checkbox" checked onchange="removeCRProduct(${c.id},'${p.replace(/'/g,"\\'")}',this)"/>
+              <span class="cr-product-name">${p}</span>
+            </div>`).join('')}
+          </div>
+        </div>
+        <div class="cr-product-add-box">
+          <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Add Products</div>
+          <div class="cr-product-search">
+            <input class="cr-input" placeholder="Search catalog..." oninput="filterProductSuggestions(${c.id},this.value)" style="margin-bottom:4px"/>
+            <div class="cr-product-suggestions" id="cr-prod-suggestions-${c.id}">
+              ${PRODUCT_CATALOG.filter(p=>!c.products.includes(p)).map(p=>`<div class="cr-product-suggestion" onclick="addCRProduct(${c.id},'${p.replace(/'/g,"\\'")}',this)">${p}</div>`).join('')}
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--muted);margin-top:4px">Click any product to add it, or use the checkbox to remove.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: NOTES & ACTIVITY -->
+  <div class="cr-tab-content" id="cr-tab-notes">
+    <div class="cr-section">
+      <div class="cr-section-label">Internal Notes</div>
+      <textarea class="cr-notes-area" oninput="updateCRField(${c.id},'notes',this.value);markUnsaved()" placeholder="Add notes, follow-up reminders, key talking points...">${c.notes||''}</textarea>
+    </div>
+    <div class="cr-section">
+      <div class="cr-section-label">Recent Activity</div>
+      <div>
+        ${getCompanyActivity(c).map(a=>`
+        <div class="cr-activity-item">
+          <div class="cr-activity-icon">${a.icon}</div>
+          <div style="flex:1">
+            <div class="cr-activity-text">${a.text}</div>
+            <div class="cr-activity-time">${a.time}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="cr-section">
+      <div class="cr-section-label">Quick Log</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="auto-trigger wa-t" onclick="openLogModal('${c.company}','wa')">💬 Log WA</button>
+        <button class="auto-trigger call-t" onclick="openLogModal('${c.company}','call')">📞 Log Call</button>
+        <button class="auto-trigger li-t" onclick="openLogModal('${c.company}','li')">💼 Log LinkedIn</button>
+        <button class="auto-trigger email-t" onclick="openLogModal('${c.company}','email')">✉️ Log Email</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAVE BAR -->
+  <div class="cr-save-bar">
+    <div style="display:flex;align-items:center;gap:12px">
+      <span class="cr-id-badge">ID: ${c.id}</span>
+      <span class="cr-save-bar unsaved" id="cr-unsaved-badge">● Unsaved changes</span>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost" style="font-size:12px" onclick="openCompanyRecord(${c.id})">↺ Reset</button>
+      <button class="btn btn-success" style="font-size:12px" onclick="saveCRRecord(${c.id})">💾 Save Record</button>
+    </div>
+  </div>
+  `;
+
+  // Activate first tab
+  switchCRTab(document.querySelector('#cr-tabs-bar .cr-tab'), 'overview');
+}
+
+function switchCRTab(el, tabId){
+  document.querySelectorAll('#cr-tabs-bar .cr-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.cr-tab-content').forEach(t=>t.classList.remove('active'));
+  const tc = document.getElementById(`cr-tab-${tabId}`);
+  if(tc) tc.classList.add('active');
+}
+
+function updateCRField(id, field, val){
+  const c = CR_COMPANIES.find(x=>x.id===id);
+  if(c) c[field] = val;
+}
+function markUnsaved(){
+  const badge = document.getElementById('cr-unsaved-badge');
+  if(badge) badge.classList.add('show');
+}
+function saveCRRecord(id){
+  const badge = document.getElementById('cr-unsaved-badge');
+  if(badge) badge.classList.remove('show');
+  renderCRList();
+  showToast('💾 Record saved successfully!');
+}
+function rerenderRecord(id){ openCompanyRecord(id); }
+
+function setCRSize(id, sz, el){
+  updateCRField(id,'msml',sz);
+  document.querySelectorAll(`#cr-size-sel-${id} .cr-size-btn`).forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  markUnsaved();
+}
+
+function addCRContact(id){
+  const c = CR_COMPANIES.find(x=>x.id===id);
+  const name = document.getElementById(`cp-name-${id}`).value.trim();
+  if(!name){showToast('⚠️ Enter contact name');return;}
+  const cp = {
+    name,
+    role: document.getElementById(`cp-role-${id}`).value.trim(),
+    phone: document.getElementById(`cp-phone-${id}`).value.trim(),
+    email: document.getElementById(`cp-email-${id}`).value.trim(),
+  };
+  c.contacts.push(cp);
+  rerenderRecord(id);
+  showToast(`✅ Contact "${name}" added!`);
+}
+function removeCRContact(id, idx){
+  const c = CR_COMPANIES.find(x=>x.id===id);
+  c.contacts.splice(idx,1);
+  rerenderRecord(id);
+  showToast('🗑️ Contact removed');
+}
+
+function addCRProduct(id, product, el){
+  const c = CR_COMPANIES.find(x=>x.id===id);
+  if(!c.products.includes(product)){
+    c.products.push(product);
+    rerenderRecord(id);
+    showToast(`✅ Added: ${product}`);
+  }
+}
+function removeCRProduct(id, product, checkbox){
+  const c = CR_COMPANIES.find(x=>x.id===id);
+  c.products = c.products.filter(p=>p!==product);
+  rerenderRecord(id);
+  showToast(`🗑️ Removed: ${product}`);
+}
+function filterProductSuggestions(id, query){
+  const c = CR_COMPANIES.find(x=>x.id===id);
+  const q = query.toLowerCase();
+  const container = document.getElementById(`cr-prod-suggestions-${id}`);
+  if(!container) return;
+  const filtered = PRODUCT_CATALOG.filter(p=>!c.products.includes(p)&&p.toLowerCase().includes(q));
+  container.innerHTML = filtered.map(p=>`<div class="cr-product-suggestion" onclick="addCRProduct(${id},'${p.replace(/'/g,"\\'")}',this)">${p}</div>`).join('');
+}
+
+function deleteCompany(id){
+  if(!confirm('Delete this company record? This cannot be undone.')) return;
+  CR_COMPANIES = CR_COMPANIES.filter(c=>c.id!==id);
+  crActiveId = null;
+  renderCRList();
+  document.getElementById('cr-record-panel').innerHTML = `<div class="cr-empty-record"><div class="icon">🏭</div><p>Company deleted. Select another record or add a new one.</p></div>`;
+  showToast('🗑️ Company deleted');
+}
+
+function addNewCompany(){
+  const newId = Math.max(...CR_COMPANIES.map(c=>c.id))+1;
+  const newCo = {
+    id:newId, company:'New Company', brand:'', category:'Mill/Factory/Mfg', salesStage:'Capture Information',
+    leadOwner:'Rajan S.', industry:'', sourceType:'', sourceName:'', status:'Capture Information',
+    msml:'', demoBooking:'', demoScheduled:'', demoHeld:'', boardingDate:'',
+    address1:'', address2:'', city:'', pincode:'', state:'', country:'India',
+    countryCode:'+91', areaCode:'', tel1:'', tel2:'', tel3:'', fax:'',
+    email1:'', email2:'', email3:'', website:'', activeClient:false,
+    products:[], contacts:[], notes:'', companyId:String(newId)
+  };
+  CR_COMPANIES.unshift(newCo);
+  crActiveId = newId;
+  renderCRList();
+  openCompanyRecord(newId);
+  showToast('✅ New company created — fill in the details and save!');
+}
+
+function exportCompanyCSV(){
+  const headers = ['ID','Company','Brand','Category','Industry','Sales Stage','Lead Owner','Status','City','State','Country','Tel1','Email1','Website','Products','Contacts'];
+  const rows = CR_COMPANIES.map(c=>[
+    c.id,`"${c.company}"`,`"${c.brand}"`,c.category,c.industry,c.salesStage,c.leadOwner,c.status,c.city,c.state,c.country,c.tel1,c.email1,c.website,
+    `"${c.products.join(';')}"`,`"${c.contacts.map(cp=>cp.name).join(';')}"`
+  ]);
+  const csv = [headers, ...rows].map(r=>r.join(',')).join('\n');
+  const blob = new Blob([csv],{type:'text/csv'});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='exportdesk_companies.csv'; a.click();
+  showToast('⬇️ CSV exported!');
+}
+
+function getCompanyActivity(c){
+  const activities = [];
+  const logs = OUTREACH_LOG.filter(l=>l.client===c.company).slice(0,4);
+  logs.forEach(l=>{
+    const icons = {wa:'💬',call:'📞',li:'💼',email:'✉️'};
+    const labels = {wa:'WhatsApp',call:'Call',li:'LinkedIn',email:'Email'};
+    activities.push({icon:icons[l.channel],text:`<strong>${l.employee}</strong> — ${labels[l.channel]}: ${l.notes.substring(0,60)}${l.notes.length>60?'...':''}`,time:l.datetime?new Date(l.datetime).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):''});
+  });
+  if(!activities.length) activities.push({icon:'📋',text:'No activity logged yet.',time:'—'});
+  return activities;
+}
+
+// ════════════════════════════════════
+//  INIT COMPANY RECORDS ON PAGE LOAD
+// ════════════════════════════════════
+function initCRPage(){
+  renderCRList();
+  if(CR_COMPANIES.length>0 && window.innerWidth>640){
+    openCompanyRecord(CR_COMPANIES[0].id);
+  }
+}
+
+// ════════════════════════════════════
+//  INIT
+// ════════════════════════════════════
+window.addEventListener('DOMContentLoaded',()=>{
+  renderLogs('mehta');
+  if(window.innerWidth>640){
+    document.getElementById('comms-panel').classList.remove('hidden');
+  }
+  renderPerformancePage();
+  renderOutreachLog();
+});
+window.addEventListener('resize',()=>{
+  if(window.innerWidth>640){
+    document.getElementById('comms-panel').classList.remove('hidden');
+    document.getElementById('comms-list').classList.remove('hidden');
+  }
+});
 </script>
 </body>
 </html>
